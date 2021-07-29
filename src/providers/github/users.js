@@ -45,10 +45,10 @@ async function getUser(token) {
     const data = await getUserResponse.json();
     console.log('[provider user data]', data);
     return data;
-  } catch(e) {
+  } catch (e) {
     console.log('[get user error]', e);
     throw new ProviderGetUserError({
-      message: 'There was an error fetching the user'
+      message: 'There was an error fetching the user',
     });
   }
 }

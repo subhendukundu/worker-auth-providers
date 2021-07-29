@@ -1,2 +1,2 @@
-export { default as GithubCallback } from './callback';  
-export { default as GithubRedirect } from './redirect';
+export { default as users } from './users';
+export { default as redirect } from './redirect';

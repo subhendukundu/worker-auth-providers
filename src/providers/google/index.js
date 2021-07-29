@@ -1,2 +1,2 @@
-export { default as GoogleCallback } from './callback';  
-export { default as GoogleRedirect } from './redirect'; 
+export { default as users } from './users';
+export { default as redirect } from './redirect';

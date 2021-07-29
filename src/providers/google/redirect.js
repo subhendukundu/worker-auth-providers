@@ -11,7 +11,7 @@ export default async function redirect({ options }) {
     include_granted_scopes: 'true',
     state: 'pass-through value',
   });
-  
+
   const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
-  return googleLoginUrl
-};
+  return googleLoginUrl;
+}
