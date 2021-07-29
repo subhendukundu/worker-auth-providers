@@ -1,1 +1,1 @@
-# worker-auth
+# worker-auth-helper
