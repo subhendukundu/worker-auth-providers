@@ -1,4 +1,4 @@
-export function parseQuerystring(request): any {
+export function parseQuerystring(request) {
   const replacedUrl = request.url.replace(/#/g, '?');
   console.log('[replacedUrl]', replacedUrl, request.url, request);
   const url = new URL(replacedUrl);
