@@ -35,8 +35,8 @@ npm install worker-auth-providers
 ```
 **Step 2**: Install the dependencies
 ```bash
-import { GithubCallback, GithubRedirect } from 'worker-auth-providers/github';
-import { GoogleCallback, GoogleRedirect } from 'worker-auth-providers/google';
+import { users, redirect } from "worker-auth-providers/github";
+import { users, redirect } from 'worker-auth-providers/google';
 ```
 
 ## 📃 Documentation
