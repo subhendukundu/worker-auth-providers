@@ -3,7 +3,7 @@
 <h1 align="center">worker-auth-helper</h1>
 
 <p align="center">
-An open-source auth helper for [Cloudflare's workers](https://workers.cloudflare.com)
+An open-source auth helper for <a href="https://workers.cloudflare.com/">Cloudflare's workers</a>
 </p>
 
 <p align="center">
@@ -35,8 +35,8 @@ npm install worker-auth-helper
 ```
 **Step 2**: Install the dependencies
 ```bash
-import github from 'worker-auth-helper/github;
-import google from 'worker-auth-helper/google;
+import github from 'worker-auth-helper/github';
+import google from 'worker-auth-helper/google';
 ```
 
 ## 📃 Documentation
