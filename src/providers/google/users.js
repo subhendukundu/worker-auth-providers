@@ -53,7 +53,6 @@ async function getUser(token) {
 }
 
 export default async function callback({ options, request }) {
-  try {
     const { query } = parseQuerystring(request);
     console.log('[query]', query);
     if (!query.code) {
@@ -64,14 +63,8 @@ export default async function callback({ options, request }) {
     const tokens = await getTokensFromCode(query.code, options);
     const accessToken = tokens.access_token;
     const providerUser = await getUser(accessToken);
-    return providerUser;
-  } catch (e) {
-    console.log('[error]', JSON.stringify(e));
     return {
-      status: 302,
-      headers: {
-        location: '/404',
-      },
+      user: providerUser,
+      tokens
     };
-  }
 }

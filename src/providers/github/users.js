@@ -65,5 +65,8 @@ export default async function callback({ options, request }) {
   const accessToken = tokens.access_token;
   console.log('[access_token]', accessToken);
   const providerUser = await getUser(accessToken);
-  return providerUser;
+  return {
+    user: providerUser,
+    tokens
+  };
 }
