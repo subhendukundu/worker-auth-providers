@@ -1,13 +1,14 @@
 {
   "name": "worker-auth-providers",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "module",
   "main": "./src/index.js",
   "repository": "https://github.com/subhendukundu/worker-auth-providers.git",
   "author": "subh <subhendukundu14@gmail.com>",
   "license": "MIT",
   "exports": {
-    "./*": "./src/providers/*/"
+    "./github": "./src/providers/github/index.js",
+    "./google": "./src/providers/google/index.js"
   },
   "devDependencies": {
     "eslint": "^7.31.0",

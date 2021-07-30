@@ -29,14 +29,36 @@ Coming soon!
 
 
 ## 🛠️ Installation
-**Step 1**: Clone and setup the project locally
+**Step 1**: Install the dependencies
 ```bash
 npm install worker-auth-providers
 ```
-**Step 2**: Install the dependencies
+**Step 2**: Import the dependencies
 ```bash
 import { users, redirect } from "worker-auth-providers/github";
 import { users, redirect } from 'worker-auth-providers/google';
+```
+**Step 3**: Redirect users
+```bash
+const githubLoginUrl = await redirect({
+    options: {
+        clientId,
+    },
+});
+return {
+    status: 302,
+    headers: {
+        location: githubLoginUrl,
+    },
+};
+```
+**Step 4**: Get user
+```bash
+const { user: providerUser, tokens } = await users({
+    options: { clientSecret, clientId },
+    request,
+});
+console.log("[providerUser]", providerUser);
 ```
 
 ## 📃 Documentation
