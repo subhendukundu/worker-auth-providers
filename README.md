@@ -34,12 +34,12 @@ Coming soon!
 npm install worker-auth-providers
 ```
 **Step 2**: Import the dependencies
-```bash
+```javascript
 import { users, redirect } from "worker-auth-providers/github";
 import { users, redirect } from 'worker-auth-providers/google';
 ```
 **Step 3**: Redirect users
-```bash
+```javascript
 const githubLoginUrl = await redirect({
     options: {
         clientId,
@@ -53,7 +53,7 @@ return {
 };
 ```
 **Step 4**: Get user
-```bash
+```javascript
 const { user: providerUser, tokens } = await users({
     options: { clientSecret, clientId },
     request,
@@ -82,6 +82,44 @@ Please adhere to this project's [code of conduct](code-of-conduct.md).
 - [ ] OTP Twilio
 - [ ] Twitter
 - [ ] Spotify
+- [ ] Auth0
+
+
+##FAQs
+
+#### How to persist login?
+
+Use cookie. Setting a cookie to indicate that they’re authorized for future requests
+
+```javascript
+const cookieKey = "worker-auth-providers"
+const persistAuth = async exchange => {
+    const date = new Date()  date.setDate(date.getDate() + 1)
+    const headers = { 
+      Location: "/",
+      "Set-cookie": `${cookieKey}=${id}; Secure; HttpOnly; SameSite=Lax; Expires=${date.toUTCString()}`,
+    }
+    return { headers, status: 302 }
+}
+```
+
+#### How to logout?
+
+Easy, delete the cookie
+
+```javascript
+export const logout = event => {
+  const cookieHeader = event.request.headers.get('Cookie')
+  if (cookieHeader && cookieHeader.includes(cookieKey)) {
+    return {
+      headers: {
+        'Set-cookie': `${cookieKey}=""; HttpOnly; Secure; SameSite=Lax;`,
+      },
+    }
+  }
+  return {}
+}
+```
 
 ## Feedback
 
