@@ -35,12 +35,11 @@ npm install worker-auth-providers
 ```
 **Step 2**: Import the dependencies
 ```javascript
-import { users, redirect } from "worker-auth-providers/github";
-import { users, redirect } from 'worker-auth-providers/google';
+import { github, google, awsSNS } from "worker-auth-providers";
 ```
 **Step 3**: Redirect users
 ```javascript
-const githubLoginUrl = await redirect({
+const githubLoginUrl = await github.redirect({
     options: {
         clientId,
     },
@@ -51,14 +50,34 @@ return {
         location: githubLoginUrl,
     },
 };
+
+// or send otp
+
+const res = await awsSNS.send({
+  options: {
+    phone,
+    region: 'ap-south-1',
+    kvProvider: WORKER_AUTH_PROVIDERS_STORE,
+  },
+})
 ```
 **Step 4**: Get user
 ```javascript
-const { user: providerUser, tokens } = await users({
+const { user: providerUser, tokens } = await github.users({
     options: { clientSecret, clientId },
     request,
 });
 console.log("[providerUser]", providerUser);
+
+// or verify otp
+const res = await awsSNS.verify({
+  options: {
+    phone,
+    otp,
+    kvProvider: WORKER_AUTH_PROVIDERS_STORE,
+    secret: 'eyJhbGciOiJIUzI1NiJ9.ew0KICAic3ViIjogIjE2Mjc4MTE1MDEiLA0KICAibmFtZSI6ICJoYWFsLmluIiwNCiAgImlhdCI6ICIwMTA4MjAyMCINCn0.aNr18szvBz3Db3HAsJ-2KHYbnnHwHfK65CiZ_AWwpc0',
+  },
+})
 ```
 
 ## 📃 Documentation

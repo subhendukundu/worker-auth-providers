@@ -1,18 +1,41 @@
 export class UnknownError extends Error {
-  constructor({ name = 'UnknownError', message }) {
-    super(message);
-    this.name = name;
-  }
+	constructor({ name = 'UnknownError', message }) {
+		super(message);
+		this.name = name;
+	}
 }
 
 export class ConfigError extends UnknownError {
-    name = 'ConfigError'
+	constructor() {
+		super();
+		this.name = 'ConfigError';
+	}
 }
 
 export class TokenError extends UnknownError {
-  name = 'TokenError'
+	constructor() {
+		super();
+		this.name = 'TokenError';
+	}
 }
 
 export class ProviderGetUserError extends UnknownError {
-  name = 'ProviderGetUserError'
+	constructor() {
+		super();
+		this.name = 'ProviderGetUserError';
+	}
+}
+
+export class ProviderSendOtpError extends UnknownError {
+	constructor() {
+		super();
+		this.name = 'ProviderSendOtpError';
+	}
+}
+
+export class ProviderVerifyOtpError extends UnknownError {
+	constructor() {
+		super();
+		this.name = 'ProviderVerifyOtpError';
+	}
 }
