@@ -3,7 +3,7 @@
 <h1 align="center">worker-auth-providers</h1>
 
 <p align="center">
-An open-source auth providers for <a href="https://workers.cloudflare.com/">Cloudflare's workers</a>
+An open-source auth providers for <a href="https://workers.cloudflare.com/">Cloudflare workers</a>
 </p>
 
 <p align="center">
