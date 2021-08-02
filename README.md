@@ -97,7 +97,7 @@ Please adhere to this project's [code of conduct](code-of-conduct.md).
 - [ ] Docs.
 - [x] Google.
 - [x] Github
-- [ ] OTP AWS SNS
+- [x] OTP AWS SNS
 - [ ] OTP Twilio
 - [ ] Twitter
 - [ ] Spotify
