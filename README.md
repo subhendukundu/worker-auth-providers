@@ -99,6 +99,10 @@ Please adhere to this project's [code of conduct](code-of-conduct.md).
 - [x] Github
 - [x] OTP AWS SNS
 - [ ] OTP Twilio
+- [ ] Email
+- [ ] Facebook
+- [ ] Instagram
+- [ ] Amazon
 - [ ] Twitter
 - [ ] Spotify
 - [ ] Auth0
