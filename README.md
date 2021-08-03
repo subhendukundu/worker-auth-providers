@@ -148,7 +148,7 @@ export const logout = event => {
 
 ## Feedback
 
-If you have any feedback, please reach out to us at subhendukundu14@gmail.com
+If you have any feedback, please reach out to me at subhendukundu14@gmail.com
 
 
 ## ✍️ Authors
