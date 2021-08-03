@@ -35,7 +35,7 @@ npm install worker-auth-providers
 ```
 **Step 2**: Import the dependencies
 ```javascript
-import { github, google, awsSNS } from "worker-auth-providers";
+import { github, google, awsSNS, twilio } from "worker-auth-providers";
 ```
 **Step 3**: Redirect users
 ```javascript
@@ -98,7 +98,7 @@ Please adhere to this project's [code of conduct](code-of-conduct.md).
 - [x] Google.
 - [x] Github
 - [x] OTP AWS SNS
-- [ ] OTP Twilio
+- [x] OTP Twilio
 - [ ] Email
 - [ ] Facebook
 - [ ] Instagram
