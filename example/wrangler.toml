@@ -1,0 +1,17 @@
+name = "cool-bio-analytics"
+type = "javascript"
+account_id = "ea5d8d3c03a46b28e8c9f25ae1c09ca8"
+workers_dev = true
+route = ""
+zone_id = ""
+
+[site]
+bucket = "dist/client"
+entry-point = "."
+
+[build]
+command = ""
+watch_dir = "dist/worker"
+
+[build.upload]
+format = "service-worker"

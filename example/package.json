@@ -1,0 +1,56 @@
+{
+  "name": "reactesse-edge",
+  "private": true,
+  "type": "module",
+  "main": "dist/worker/script.js",
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "dev": "vitedge --ssr --port 3333 --open",
+    "dev:spa": "vitedge --port 3333 --open",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && cross-env NODE_ENV=production vitedge build",
+    "preview": "vitedge preview",
+    "preview:watch": "vitedge preview --build-watch",
+    "preview:wrangler": "wrangler dev",
+    "deploy": "wrangler publish"
+  },
+  "dependencies": {
+    "@mdx-js/react": "^1.6.22",
+    "@react-icons/all-files": "^4.1.0",
+    "i18next": "^20.3.5",
+    "prism-theme-vars": "^0.2.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-helmet-async": "^1.0.9",
+    "react-i18next": "^11.11.4",
+    "react-router": "^5.2.0",
+    "react-router-config": "^5.1.1",
+    "react-router-dom": "^5.2.0",
+    "vitedge": "^0.15.1",
+    "worker-auth-providers": "^0.0.8"
+  },
+  "devDependencies": {
+    "@mdx-js/mdx": "^1.6.22",
+    "@types/jest": "^26.0.24",
+    "@types/node": "^16.4.10",
+    "@types/react": "^17.0.15",
+    "@types/react-dom": "^17.0.9",
+    "@types/react-router-config": "^5.0.3",
+    "@types/react-router-dom": "^5.1.8",
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@vitejs/plugin-react-refresh": "^1.3.6",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.32.0",
+    "miniflare": "^1.3.3",
+    "remark-prism": "^1.3.6",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5",
+    "vite": "^2.4.4",
+    "vite-plugin-mdx": "^3.5.6",
+    "vite-plugin-pages": "0.12.x",
+    "vite-plugin-windicss": "^1.2.7"
+  }
+}
