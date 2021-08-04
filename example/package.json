@@ -1,5 +1,5 @@
 {
-  "name": "reactesse-edge",
+  "name": "worker-auth-providers-example",
   "private": true,
   "type": "module",
   "main": "dist/worker/script.js",

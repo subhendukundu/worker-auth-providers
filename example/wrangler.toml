@@ -1,4 +1,4 @@
-name = "cool-bio-analytics"
+name = "worker-auth-providers"
 type = "javascript"
 account_id = "ea5d8d3c03a46b28e8c9f25ae1c09ca8"
 workers_dev = true
