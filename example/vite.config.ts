@@ -10,9 +10,12 @@ import reactRefresh from '@vitejs/plugin-react-refresh'
 
 export default defineConfig({
   resolve: {
-    alias: {
-      '~/': `${path.resolve(__dirname, 'src')}/`,
-    },
+    alias: [
+      {
+        find: "./runtimeConfig",
+        replacement: ("./runtimeConfig.browser"),
+      },
+    ],
   },
   plugins: [
     reactRefresh(),

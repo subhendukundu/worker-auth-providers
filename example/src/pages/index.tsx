@@ -38,9 +38,8 @@ export default function Home({ message }: any) {
         <a
           className="icon-btn"
           rel="noreferrer"
-          href="https://github.com/frandiox/reactesse-edge-template"
-          target="_blank"
-          title="Template"
+          href="/api/v1/auth/github/redirect"
+          title="Github Login"
         >
           <AiFillGithub />
         </a>
@@ -48,7 +47,6 @@ export default function Home({ message }: any) {
           className="icon-btn"
           rel="noreferrer"
           href="https://github.com/frandiox/reactesse-edge-template"
-          target="_blank"
           title="Template"
         >
           <AiOutlineGoogle />
@@ -57,7 +55,6 @@ export default function Home({ message }: any) {
           className="icon-btn"
           rel="noreferrer"
           href="https://github.com/frandiox/reactesse-edge-template"
-          target="_blank"
           title="Template"
         >
           <FaSpotify />
@@ -66,7 +63,6 @@ export default function Home({ message }: any) {
           className="icon-btn"
           rel="noreferrer"
           href="https://github.com/frandiox/reactesse-edge-template"
-          target="_blank"
           title="Template"
         >
           <FaDiscord />

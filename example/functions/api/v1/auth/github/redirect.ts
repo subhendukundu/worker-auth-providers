@@ -5,7 +5,7 @@ export default <ApiEndpoint>{
   async handler({ params }) {
     const location =  await github.redirect({
         options: {
-            clientId: import.meta.env.VITEDGE_GITHUBCLIENT_ID,
+            clientId: import.meta.env.VITEDGE_GITHUB_CLIENT_ID,
         }
     });
     return {

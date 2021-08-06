@@ -18,5 +18,5 @@ export function parseQuerystring(request) {
 }
 
 export function getFixedDigitRandomNumber(n) {
-	return ('' + Math.random()).substring(2, 2 + n);
+	return (`${  Math.random()}`).substring(2, 2 + n);
 }
