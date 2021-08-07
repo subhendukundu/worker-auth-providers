@@ -1,0 +1,18 @@
+{
+  "button": {
+    "about": "About",
+    "back": "Back",
+    "aws_otp": "AWS OTP",
+    "twillio_otp": "Twillio OTP",
+    "home": "Home",
+    "toggle_dark": "Toggle dark mode",
+    "toggle_langs": "Change languages"
+  },
+  "intro": {
+    "desc": "With the help of Vitedge",
+    "dynamic-route": "Demo of dynamic route",
+    "hi": "Hi, {{name}}!",
+    "whats-your-name": "+919999999999"
+  },
+  "not-found": "Not found"
+}

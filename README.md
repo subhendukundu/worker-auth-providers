@@ -36,7 +36,9 @@ npm install worker-auth-providers
 **Step 2**: Import the dependencies
 ```javascript
 import {
-  github, google, awsSNS, twilio, facebook
+  github, google, awsSNS,
+  twilio, facebook, discord,
+  spotify
 } from "worker-auth-providers";
 ```
 **Step 3**: Redirect users
@@ -103,10 +105,11 @@ Please adhere to this project's [code of conduct](code-of-conduct.md).
 - [x] OTP Twilio
 - [ ] Email
 - [x] Facebook
+- [x] Discord
 - [ ] Instagram
 - [ ] Amazon
 - [ ] Twitter
-- [ ] Spotify
+- [x] Spotify
 - [ ] Auth0
 
 
