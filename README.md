@@ -103,7 +103,8 @@ Please adhere to this project's [code of conduct](code-of-conduct.md).
 - [x] Github
 - [x] OTP AWS SNS
 - [x] OTP Twilio
-- [ ] Email
+- [x] Mailgun Email
+- [x] Sendgrid Email
 - [x] Facebook
 - [x] Discord
 - [ ] Instagram
