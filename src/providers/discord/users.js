@@ -5,21 +5,37 @@ import {
 } from '../../utils/errors';
 import { parseQuerystring } from '../../utils/helpers';
 
+function _encode(obj) {
+	let string = "";
+  
+	for (const [key, value] of Object.entries(obj)) {
+	  if (!value) continue;
+	  string += `&${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+	}
+  
+	return string.substring(1);
+}
+  
 async function getTokensFromCode(
 	code,
-	{ clientId, clientSecret, redirectUrl }
+	{ clientId, clientSecret, redirectUrl, scope = 'identify' }
 ) {
 	console.log('[redirectUrl]', redirectUrl);
-	const creds = btoa(`${clientId}:${clientSecret}`);
-	const response = await fetch(
-		`https://discordapp.com/api/oauth2/token?grant_type=authorization_code&code=${code}&redirect_uri=${redirectUrl}`,
-		{
-			method: 'POST',
-			headers: {
-				Authorization: `Basic ${creds}`
-			}
-		}
-	);
+	const data = {
+		'client_id': clientId,
+		'client_secret': clientSecret,
+		'grant_type': 'authorization_code',
+		'code': code,
+		'redirect_uri': redirectUrl,
+		'scope': scope
+	};
+	const params = _encode(data);
+	const response = await fetch(`https://discordapp.com/api/oauth2/token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params
+    });
+
 	const result = await response.json();
 	console.log('[tokens]', result);
 

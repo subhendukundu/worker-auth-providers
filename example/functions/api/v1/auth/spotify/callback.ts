@@ -1,9 +1,5 @@
-import { github } from "worker-auth-providers";
+import { spotify } from "worker-auth-providers";
 import jwt from "jsonwebtoken";
-
-const clientId = process.env.VITEDGE_GITHUB_CLIENT_ID;
-
-const clientSecret = process.env.VITEDGE_GITHUB_CLIENT_SECRET;
 
 function generateJWT(user: any) {
     const claims: any = {
@@ -11,14 +7,18 @@ function generateJWT(user: any) {
     };
     const secret = process.env.VITEDGE_ENCODE_JWT_TOKEN;
     console.log("[claims, scret]", claims, secret);
-    return jwt.sign(claims, secret, { algorithm: "HS256", expiresIn: "10h" });
+    return jwt.sign(claims, secret, { algorithm: "HS256", expiresIn: "24h" });
 }
 
 export default {
     async handler({ request }: any) {
         try {
-            const { user: providerUser, tokens } = await github.users({
-                options: { clientSecret, clientId },
+            const { user: providerUser } = await spotify.users({
+                options: {
+                    clientId: process.env.VITEDGE_SPOTIFY_CLIENT_ID,
+                    clientSecret: process.env.VITEDGE_SPOTIFY_CLIENT_SECRET,
+                    redirectUrl: process.env.VITEDGE_SPOTIFY_REDIRECT_PROD_URL
+                },
                 request,
             });
             console.log("[providerUser]", providerUser);
@@ -29,7 +29,7 @@ export default {
             return {
                 status: 302,
                 headers: {
-                    location: "/projects",
+                    location: "/me",
                     "Set-Cookie": `__Session-worker.auth.providers-token=${jwt}; expires=${now.toUTCString()}; path=/;`,
                 },
             };

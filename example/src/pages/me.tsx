@@ -1,14 +1,27 @@
 import React from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import { Redirect, useHistory } from "react-router-dom";
 import { FaRegHandSpock } from '@react-icons/all-files/fa/FaRegHandSpock'
 import { useTranslation } from 'react-i18next'
+import { useAuth } from '../providers/AuthProvider'
 
-export default function Hi({ message }: any) {
-  const { name } = useParams() as any
-
+export default function Me() {
   const history = useHistory()
+  const { token, logout } = useAuth();
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
+
+  function onLogout(){
+    logout();
+    history.push("/");
+  }
+
+  if (token === null) {
+    return <div>loading...</div>;
+  }
+
+  if (!token) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div>
@@ -22,12 +35,11 @@ export default function Hi({ message }: any) {
       <div>
         <button
           className="btn m-3 text-sm mt-8"
-          onClick={() => history.goBack()}
+          onClick={onLogout}
         >
-          {t('button.back')}
+          {t('button.logout')}
         </button>
       </div>
-      Message from API: {message}
     </div>
   )
 }
