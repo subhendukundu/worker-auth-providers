@@ -19,7 +19,15 @@ export default defineConfig({
   },
   plugins: [
     reactRefresh(),
-    vitedge(),
+    vitedge({
+      functions: {
+        build: {
+          rollupOptions: {
+            external: ['aws-...']
+          }
+        }
+      }
+    }),
     // @ts-ignore
     mdx.default({
       remarkPlugins: [remarkPrism],
