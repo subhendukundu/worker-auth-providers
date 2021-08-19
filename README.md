@@ -20,7 +20,7 @@ An open-source auth providers for <a href="https://workers.cloudflare.com/">Clou
 worker-auth-providers is an open-source providers to make authentication easy with workers. Very lightweight script which doesn't need a lot of dependencies. Plug it with any framework or template of workers.
 
 ## 🚀 Demo
-Coming soon!
+[Try now](https://worker-auth-providers.coolbio.workers.dev)
 
 ## 🧐 Features
 - Open Source
@@ -103,7 +103,8 @@ Please adhere to this project's [code of conduct](code-of-conduct.md).
 - [x] Github
 - [x] OTP AWS SNS
 - [x] OTP Twilio
-- [ ] Email
+- [x] Mailgun Email
+- [x] Sendgrid Email
 - [x] Facebook
 - [x] Discord
 - [ ] Instagram

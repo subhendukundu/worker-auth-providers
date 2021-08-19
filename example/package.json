@@ -1,26 +1,26 @@
 {
   "name": "worker-auth-providers-example",
-  "private": true,
   "type": "module",
-  "main": "dist/worker/script.js",
   "engines": {
     "node": ">=14"
   },
   "scripts": {
-    "dev": "vitedge --ssr --port 3333 --open",
-    "dev:spa": "vitedge --port 3333 --open",
+    "dev": "vitedge --force",
+    "dev:ssr": "vitedge --ssr --force",
     "clean": "rm -rf dist",
-    "build": "npm run clean && cross-env NODE_ENV=production vitedge build",
+    "build": "rm -rf dist && vitedge build --mode production",
     "preview": "vitedge preview",
     "preview:watch": "vitedge preview --build-watch",
     "preview:wrangler": "wrangler dev",
-    "deploy": "wrangler publish"
+    "deploy": "cd worker-site && wrangler publish",
+    "build:deploy": "yarn build && yarn deploy"
   },
   "dependencies": {
     "@mdx-js/react": "^1.6.22",
     "@react-icons/all-files": "^4.1.0",
     "i18next": "^20.3.5",
     "prism-theme-vars": "^0.2.2",
+    "query-string": "^7.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-helmet-async": "^1.0.9",
@@ -28,8 +28,8 @@
     "react-router": "^5.2.0",
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.2.0",
-    "vitedge": "^0.15.1",
-    "worker-auth-providers": "^0.0.8"
+    "vitedge": "0.14.0",
+    "worker-auth-providers": "^0.0.10"
   },
   "devDependencies": {
     "@mdx-js/mdx": "^1.6.22",
@@ -48,7 +48,7 @@
     "rimraf": "^3.0.2",
     "ts-node": "^10.1.0",
     "typescript": "^4.3.5",
-    "vite": "^2.4.4",
+    "vite": "^2.5.0",
     "vite-plugin-mdx": "^3.5.6",
     "vite-plugin-pages": "0.12.x",
     "vite-plugin-windicss": "^1.2.7"

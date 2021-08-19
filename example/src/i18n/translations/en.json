@@ -1,7 +1,7 @@
 {
   "button": {
     "about": "About",
-    "back": "Back",
+    "logout": "Logout",
     "aws_otp": "AWS OTP",
     "twillio_otp": "Twillio OTP",
     "home": "Home",

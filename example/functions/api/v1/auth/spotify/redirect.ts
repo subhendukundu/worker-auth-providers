@@ -1,11 +1,12 @@
 import type { ApiEndpoint } from 'vitedge'
-import { github } from "worker-auth-providers";
+import { spotify } from "worker-auth-providers";
 
 export default <ApiEndpoint>{
   async handler({ params }) {
-    const location =  await github.redirect({
+    const location =  await spotify.redirect({
         options: {
-            clientId: process.env.VITEDGE_GITHUB_CLIENT_ID,
+          clientId: process.env.VITEDGE_SPOTIFY_CLIENT_ID,
+          redirectUrl: process.env.VITEDGE_SPOTIFY_REDIRECT_PROD_URL
         }
     });
     return {

@@ -1,20 +1,23 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { Redirect } from "react-router-dom";
 import { FaSpotify } from '@react-icons/all-files/fa/FaSpotify'
 import { FaDiscord } from '@react-icons/all-files/fa/FaDiscord'
 import { AiFillGithub } from '@react-icons/all-files/ai/AiFillGithub'
 import { AiOutlineGoogle } from '@react-icons/all-files/ai/AiOutlineGoogle'
+import { useAuth } from '../providers/AuthProvider'
 
 export default function Home({ message }: any) {
-  const [name = '', setName] = useState<string>()
+  const { token } = useAuth();
+  const { t } = useTranslation();
 
-  const history = useHistory()
-  const go = () => {
-    history.push(`/hi/${encodeURIComponent(name)}`)
+  if (token === null) {
+    return <div>loading...</div>;
   }
 
-  const { t } = useTranslation()
+  if (token) {
+    return <Redirect to="/me" />;
+  }
 
   return (
     <div>
@@ -46,7 +49,7 @@ export default function Home({ message }: any) {
         <a
           className="icon-btn"
           rel="noreferrer"
-          href="https://github.com/frandiox/reactesse-edge-template"
+          href="/api/v1/auth/google/redirect"
           title="Template"
         >
           <AiOutlineGoogle />
@@ -54,7 +57,7 @@ export default function Home({ message }: any) {
         <a
           className="icon-btn"
           rel="noreferrer"
-          href="https://github.com/frandiox/reactesse-edge-template"
+          href="/api/v1/auth/spotify/redirect"
           title="Template"
         >
           <FaSpotify />
@@ -62,52 +65,12 @@ export default function Home({ message }: any) {
         <a
           className="icon-btn"
           rel="noreferrer"
-          href="https://github.com/frandiox/reactesse-edge-template"
+          href="/api/v1/auth/discord/redirect"
           title="Template"
         >
           <FaDiscord />
         </a>
       </nav>
-      <p className="py-4 text-sm">OR</p>
-      <input
-        id="input"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder={t('intro.whats-your-name')}
-        aria-label={t('intro.whats-your-name')}
-        type="text"
-        autoComplete="false"
-        className="px-4 py-2 text-sm text-center bg-transparent border border-gray-200 rounded outline-none active:outline-none dark:border-gray-700"
-        style={{ width: '250px' }}
-      />
-      <label className="hidden" htmlFor="input">
-        {t('intro.whats-your-name')}
-      </label>
-      <div>
-        <button className="m-3 text-sm btn" disabled={!name} onClick={go}>
-          {t('button.aws_otp')}
-        </button>
-      </div>
-      <p className="py-4 text-sm">OR</p>
-      <input
-        id="input"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder={t('intro.whats-your-name')}
-        aria-label={t('intro.whats-your-name')}
-        type="text"
-        autoComplete="false"
-        className="px-4 py-2 text-sm text-center bg-transparent border border-gray-200 rounded outline-none active:outline-none dark:border-gray-700"
-        style={{ width: '250px' }}
-      />
-      <label className="hidden" htmlFor="input">
-        {t('intro.whats-your-name')}
-      </label>
-      <div>
-        <button className="m-3 text-sm btn" disabled={!name} onClick={go}>
-          {t('button.twillio_otp')}
-        </button>
-      </div>
     </div>
   )
 }

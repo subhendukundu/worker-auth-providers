@@ -7,8 +7,9 @@ import { FiSun } from '@react-icons/all-files/fi/FiSun'
 import { IoLanguage } from '@react-icons/all-files/io5/IoLanguage'
 import { AiOutlineFileText } from '@react-icons/all-files/ai/AiOutlineFileText'
 import { AiFillGithub } from '@react-icons/all-files/ai/AiFillGithub'
-import { useDarkTheme } from '~/utils/dark-theme'
-import { DEFAULT_LOCALE, SUPPORTED_LOCALES as locales } from '~/i18n'
+import { AiFillHeart } from '@react-icons/all-files/ai/AiFillHeart'
+import { useDarkTheme } from '../utils/dark-theme'
+import { DEFAULT_LOCALE, SUPPORTED_LOCALES as locales } from '../i18n'
 import { useTranslation } from 'react-i18next'
 
 export default function Footer() {
@@ -26,14 +27,10 @@ export default function Footer() {
 
   return (
     <nav className="text-xl mt-6 space-x-2">
-      <Link className="icon-btn" to="/" title={t('button.home')}>
-        <FaCampground />
-      </Link>
-
       <a
         className="icon-btn"
         rel="noreferrer"
-        href="https://github.com/frandiox/vite-ssr"
+        href="https://github.com/subhendukundu/worker-auth-providers"
         target="_blank"
         title="Library"
       >
@@ -47,26 +44,19 @@ export default function Footer() {
       >
         {isDark ? <FiMoon /> : <FiSun />}
       </a>
-      <a
-        className="icon-btn"
-        title={t('button.toggle_langs')}
-        onClick={toggleLocales}
-      >
-        <IoLanguage />
-      </a>
 
-      <Link className="icon-btn" title={t('button.about')} to="/about">
+      <Link className="icon-btn" title={t('button.about')} to="/docs">
         <AiOutlineFileText />
       </Link>
 
       <a
         className="icon-btn"
         rel="noreferrer"
-        href="https://github.com/frandiox/reactesse-edge-template"
+        href="https://vitedge.js.org/"
         target="_blank"
         title="Template"
       >
-        <AiFillGithub />
+        Made with Vitedge <AiFillHeart />
       </a>
     </nav>
   )
