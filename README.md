@@ -20,7 +20,7 @@ An open-source auth providers for <a href="https://workers.cloudflare.com/">Clou
 worker-auth-providers is an open-source providers to make authentication easy with workers. Very lightweight script which doesn't need a lot of dependencies. Plug it with any framework or template of workers.
 
 ## 🚀 Demo
-Coming soon!
+[Try now](https://worker-auth-providers.coolbio.workers.dev)
 
 ## 🧐 Features
 - Open Source

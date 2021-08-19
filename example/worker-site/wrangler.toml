@@ -6,6 +6,10 @@ route = ""
 zone_id = ""
 webpack_config = "webpack.config.js"
 
+kv-namespaces = [
+  { binding = "WORKER_AUTH_PROVIDERS_STORE", preview_id = "99e3d686a2b249a1b12a5ee49ba388d8", id = "99e3d686a2b249a1b12a5ee49ba388d8" }
+]
+
 [site]
 bucket = "../dist/client"
 entry-point = "."

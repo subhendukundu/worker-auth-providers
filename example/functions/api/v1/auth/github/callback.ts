@@ -7,21 +7,34 @@ const clientSecret = process.env.VITEDGE_GITHUB_CLIENT_SECRET;
 
 function generateJWT(user: any) {
     const claims: any = {
-        user_id: (`${  Math.random()}`).substring(2, 12)
+        user_id: user?.id,
     };
     const secret = process.env.VITEDGE_ENCODE_JWT_TOKEN;
     console.log("[claims, scret]", claims, secret);
     return jwt.sign(claims, secret, { algorithm: "HS256", expiresIn: "24h" });
 }
 
+async function createUser(user: any) {
+    console.log(user.id);
+    const profile = {
+        id: user.id,
+        name: user.name,
+        image: user.avatar_url,
+        email: user.email,
+    };
+	//@ts-ignore
+	return await WORKER_AUTH_PROVIDERS_STORE.put(user.id, JSON.stringify(profile));
+}
+
 export default {
     async handler({ request }: any) {
         try {
-            const { user: providerUser, tokens } = await github.users({
+            const { user: providerUser } = await github.users({
                 options: { clientSecret, clientId },
                 request,
             });
             console.log("[providerUser]", providerUser);
+            await createUser(providerUser);
             const jwt = generateJWT(providerUser);
             console.log("[jwt]", jwt);
             const now = new Date();
@@ -34,7 +47,7 @@ export default {
                 },
             };
         } catch (e) {
-            console.log("[error]", JSON.stringify(e));
+            console.log("[error]", e?.stack);
             return {
                 status: 302,
                 headers: {

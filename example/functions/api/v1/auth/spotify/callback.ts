@@ -3,11 +3,24 @@ import jwt from "jsonwebtoken";
 
 function generateJWT(user: any) {
     const claims: any = {
-        user_id: (`${  Math.random()}`).substring(2, 12)
+        user_id: user?.id,
     };
+    console.log('[claims]', claims)
     const secret = process.env.VITEDGE_ENCODE_JWT_TOKEN;
     console.log("[claims, scret]", claims, secret);
     return jwt.sign(claims, secret, { algorithm: "HS256", expiresIn: "24h" });
+}
+
+async function createUser(user: any) {
+    console.log(user.id);
+    const profile = {
+        id: user.id,
+        name: user.display_name,
+        image: user.images[0]?.url,
+        email: user.email || null,
+    };
+	//@ts-ignore
+	return await WORKER_AUTH_PROVIDERS_STORE.put(user.id, JSON.stringify(profile));
 }
 
 export default {
@@ -22,6 +35,7 @@ export default {
                 request,
             });
             console.log("[providerUser]", providerUser);
+            await createUser(providerUser);
             const jwt = generateJWT(providerUser);
             console.log("[jwt]", jwt);
             const now = new Date();
@@ -34,7 +48,7 @@ export default {
                 },
             };
         } catch (e) {
-            console.log("[error]", JSON.stringify(e));
+            console.log("[error]", e?.stack);
             return {
                 status: 302,
                 headers: {

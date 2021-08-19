@@ -3,11 +3,23 @@ import jwt from "jsonwebtoken";
 
 function generateJWT(user: any) {
     const claims: any = {
-        user_id: (`${  Math.random()}`).substring(2, 12)
+        user_id: user?.id,
     };
     const secret = process.env.VITEDGE_ENCODE_JWT_TOKEN;
     console.log("[claims, scret]", claims, secret);
     return jwt.sign(claims, secret, { algorithm: "HS256", expiresIn: "24h" });
+}
+
+async function createUser(user: any) {
+    console.log(user.id);
+    const profile = {
+        id: user.id,
+        name: user.username,
+        image: `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`,
+        email: user.email,
+    }
+	//@ts-ignore
+	return await WORKER_AUTH_PROVIDERS_STORE.put(user.id, JSON.stringify(profile));
 }
 
 export default {
@@ -23,6 +35,7 @@ export default {
                 request,
             });
             console.log("[providerUser]", providerUser);
+            await createUser(providerUser);
             const jwt = generateJWT(providerUser);
             console.log("[jwt]", jwt);
             const now = new Date();
@@ -35,7 +48,7 @@ export default {
                 },
             };
         } catch (e) {
-            console.log("[error]", JSON.stringify(e));
+            console.log("[error]", e?.stack);
             return {
                 status: 302,
                 headers: {
