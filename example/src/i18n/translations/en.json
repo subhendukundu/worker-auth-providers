@@ -10,7 +10,7 @@
   },
   "intro": {
     "desc": "With the help of Vitedge",
-    "dynamic-route": "Demo of dynamic route",
+    "demo-login": "Demo of worker login",
     "hi": "Hi, {{name}}!",
     "whats-your-name": "+919999999999"
   },

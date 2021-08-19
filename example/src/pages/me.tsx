@@ -38,12 +38,12 @@ export default function Me() {
 
   return (
     <div>
-      <p className="text-4xl">
+      {image && <p className="text-4xl">
         <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white" src={image} alt={`${name}'s profile`} />
-      </p>
+      </p>}
       <p>{t('intro.hi', { name })}</p>
       <p className="text-sm opacity-50">
-        <em>{t('intro.dynamic-route')}</em>
+        <em>{t('intro.demo-login')}</em>
       </p>
       <div>
         <button
