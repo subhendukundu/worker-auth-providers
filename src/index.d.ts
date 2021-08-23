@@ -7,5 +7,5 @@ declare module 'worker-auth-providers' {
     export const discord: any;
     export const spotify: any;
     export const sendgridEmail: any;
-	export const mailgunEmail: any;
+    export const mailgunEmail: any;
 }
