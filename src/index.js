@@ -1,5 +1,6 @@
 import * as github from './providers/github';
 import * as google from './providers/google';
+import * as auth0 from './providers/auth0';
 import * as awsSNS from './providers/aws-sns';
 import * as twilio from './providers/twilio';
 import * as facebook from './providers/facebook';
@@ -11,6 +12,7 @@ import * as mailgunEmail from './providers/mailgun-email';
 export {
 	github,
 	google,
+	auth0,
 	awsSNS,
 	twilio,
 	facebook,
