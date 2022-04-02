@@ -9,7 +9,7 @@ const AuthProvider = ({ children }) => {
 
   const logout = () => {
     deleteCookie();
-    setAuth({ toekn: null });
+    setAuth({ token: null });
   };
 
   useEffect(() => {
