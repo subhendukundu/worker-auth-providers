@@ -51,7 +51,7 @@ async function getUser(token) {
                 method: 'GET',
                 headers,
           });
-          const emails: GithubEmail[] = await res.json()
+          const emails = await res.json()
           console.log('[provider user emails]', emails);
           data.emails = emails
           data.email = (emails.find((e) => e.primary) ?? emails[0]).email
