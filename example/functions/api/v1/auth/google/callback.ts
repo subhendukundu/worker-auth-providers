@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
-import { google } from "worker-auth-providers";
+import jwt from '@tsndr/cloudflare-worker-jwt';
+import { google } from "da7a90-backup/worker-auth-providers";
 
 function generateJWT(user: any) {
     const claims: any = {

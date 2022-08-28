@@ -1,6 +1,6 @@
 import type { ApiEndpoint } from 'vitedge'
 import { BadRequestError } from "vitedge/errors";
-import jwt from "jsonwebtoken";
+import jwt from "@tsndr/cloudflare-worker-jwt";
 import { getJwt } from '../../../../src/utils/session';
 
 export default <ApiEndpoint>{

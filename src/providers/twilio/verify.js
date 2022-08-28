@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt from '@tsndr/cloudflare-worker-jwt';
 import { ProviderVerifyOtpError } from '../../utils/errors';
 
 function generateJWT({ secret, phone, claims }) {
