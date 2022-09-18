@@ -36,7 +36,7 @@ npm install worker-auth-providers
 **Step 2**: Import the dependencies
 ```javascript
 import {
-  github, google, awsSNS,
+  github, google,
   twilio, facebook, discord,
   spotify
 } from "worker-auth-providers";
@@ -101,7 +101,6 @@ Please adhere to this project's [code of conduct](code-of-conduct.md).
 - [ ] Docs.
 - [x] Google.
 - [x] Github
-- [x] OTP AWS SNS
 - [x] OTP Twilio
 - [x] Mailgun Email
 - [x] Sendgrid Email
@@ -152,11 +151,11 @@ export const logout = event => {
 
 ## Feedback
 
-If you have any feedback, please reach out to me at subhendukundu14@gmail.com
+If you have any feedback, please reach out to me at sidbarrack@gmail.com
 
 
 ## ✍️ Authors
-- [@subhendukundu](https://www.github.com/subhendukundu)
+- [@subhendukundu](https://www.github.com/da7a90-backup)
 
 ## 💼 License
-[MIT](https://github.com/subhendukundu/worker-auth-providers/blob/main/LICENSE)
+[MIT](https://github.com/da7a90-backup/worker-auth-providers/blob/main/LICENSE)
