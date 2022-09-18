@@ -3,8 +3,8 @@
   "version": "0.0.10",
   "type": "module",
   "main": "./src/index.js",
-  "repository": "https://github.com/subhendukundu/worker-auth-providers.git",
-  "author": "subh <subhendukundu14@gmail.com>",
+  "repository": "https://github.com/da7a90-backup/worker-auth-providers.git",
+  "author": "sidbarrack <sidbarrack@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "eslint": "^7.32.0",
@@ -16,8 +16,7 @@
     "prettier-eslint": "^13.0.0"
   },
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.24.0",
-    "jsonwebtoken": "^8.5.1",
+    "@tsndr/cloudflare-worker-jwt": "^2.0.1",
     "query-string": "^7.0.1"
   }
 }

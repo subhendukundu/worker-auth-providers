@@ -1,5 +1,5 @@
-import { discord } from "worker-auth-providers";
-import jwt from "jsonwebtoken";
+import { discord } from "da7a90-backup/worker-auth-providers";
+import jwt from "@tsndr/cloudflare-worker-jwt";
 
 function generateJWT(user: any) {
     const claims: any = {
