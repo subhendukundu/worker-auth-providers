@@ -47,7 +47,7 @@ async function getUser(token, fields = 'id,email,first_name,last_name') {
 }
 
 export default async function callback({ options, request }) {
-    const { query } = parseQuerystring(request);
+    const { query }: any = parseQuerystring(request);
     console.log('[query]', query);
     if (!query.code) {
       throw new ConfigError({

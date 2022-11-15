@@ -1,12 +1,12 @@
 import jwt from '@tsndr/cloudflare-worker-jwt';
 import { ProviderVerifyOtpError } from '../../utils/errors';
 
-function generateJWT({ secret, phone, claims }) {
+function generateJWT({ secret, to, claims }) {
 	const customClaims = claims || {
-		id: phone
+		id: to
 	};
 	console.log('[claims, scret]', customClaims, secret);
-	return jwt.sign(customClaims, secret, { algorithm: 'HS256', expiresIn: '24h' });
+	return jwt.sign({ exp: '24h', ...customClaims}, secret, { algorithm: 'HS256'});
 }
 
 export default async function verify({ options }) {
