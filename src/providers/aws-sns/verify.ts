@@ -6,13 +6,13 @@ function generateJWT({ secret, phone, claims }) {
 		id: phone
 	};
 	console.log('[claims, scret]', customClaims, secret);
-	return jwt.sign(customClaims, secret, { algorithm: 'HS256', expiresIn: '24h' });
+	return jwt.sign({ exp: '24h', ...customClaims}, secret, { algorithm: 'HS256' });
 }
 
 export default async function verify({ options }) {
-	const { kvProvider, to, otp, secret, claims } = options;
+	const { kvProvider, phone, otp, secret, claims } = options;
 
-	const storedOtp = await kvProvider.get(to);
+	const storedOtp = await kvProvider.get(phone);
 
 	if (!storedOtp || Number(otp) !== Number(storedOtp)) {
 		throw new ProviderVerifyOtpError({
@@ -22,17 +22,17 @@ export default async function verify({ options }) {
 
 	const token = secret ? generateJWT({
 		secret,
-		to,
+		phone,
 		claims
 	}) : null;
 
 	console.log(token);
-	await kvProvider.delete(to);
+	await kvProvider.delete(phone);
 
 	return token ? {
-		id: to,
+		id: phone,
 		token
 	} : {
-		id: to
+		id: phone
 	};
 }

@@ -10,7 +10,7 @@ function _encode(obj) {
   
 	for (const [key, value] of Object.entries(obj)) {
 	  if (!value) continue;
-	  string += `&${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+	  string += `&${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`;
 	}
   
 	return string.substring(1);
@@ -66,7 +66,7 @@ async function getUser(oauthData) {
 }
 
 export default async function callback({ options, request }) {
-	const { query } = parseQuerystring(request);
+	const { query }: any = parseQuerystring(request);
 	console.log('[query]', query);
 	if (!query.code) {
 		throw new ConfigError({
