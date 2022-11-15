@@ -151,11 +151,11 @@ export const logout = event => {
 
 ## Feedback
 
-If you have any feedback, please reach out to me at sidbarrack@gmail.com
+If you have any feedback, please reach out to me at subhendukundu14@gmail.com
 
 
 ## ✍️ Authors
-- [@subhendukundu](https://www.github.com/da7a90-backup)
+- [@subhendukundu](https://www.github.com/subhendukundu)
 
 ## 💼 License
-[MIT](https://github.com/da7a90-backup/worker-auth-providers/blob/main/LICENSE)
+[MIT](https://github.com/subhendukundu/worker-auth-providers/blob/main/LICENSE)
