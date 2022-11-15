@@ -7,7 +7,7 @@
   "author": "Subh <subhendukundu14@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc --build",
+    "build": "rm -rf dist && tsc --build",
     "prepare": "yarn build"
   },
   "devDependencies": {
