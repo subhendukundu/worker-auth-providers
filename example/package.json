@@ -29,7 +29,7 @@
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.2.0",
     "vitedge": "0.14.0",
-    "worker-auth-providers": "^0.0.10"
+    "worker-auth-providers": "^0.0.10-beta7"
   },
   "devDependencies": {
     "@mdx-js/mdx": "^1.6.22",
