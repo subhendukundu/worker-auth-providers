@@ -1,8 +1,9 @@
 import { ConfigError, ProviderGetUserError, TokenError } from '../../utils/errors';
 import { parseQuerystring } from '../../utils/helpers';
+import { logger } from '../../utils/logger';
 
 async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl }) {
-  console.log('[redirectUrl]', redirectUrl);
+  logger.log(`[redirectUrl], ${JSON.stringify(redirectUrl)}`, 'info');
 
   const params = {
     client_id: clientId,
@@ -21,7 +22,7 @@ async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl }) 
     body: JSON.stringify(params),
   });
   const result = await response.json();
-  console.log('[tokens]', result);
+  logger.log(`[tokens], ${JSON.stringify(result)}`, 'info');
 
   if (result.error) {
     throw new TokenError({
@@ -42,10 +43,10 @@ async function getUser(token) {
       },
     );
     const data = await getUserResponse.json();
-    console.log('[provider user data]', data);
+    logger.log(`[provider user data], ${JSON.stringify(data)}`, 'info');
     return data;
   } catch (e) {
-    console.log('[get user error]', e);
+    logger.log(`[error], ${JSON.stringify(e.stack)}`, 'error');
     throw new ProviderGetUserError({
       message: 'There was an error fetching the user',
     });
@@ -54,7 +55,8 @@ async function getUser(token) {
 
 export default async function callback({ options, request }) {
     const { query }: any = parseQuerystring(request);
-    console.log('[query]', query);
+    logger.setEnabled(options?.isLogEnabled || false);
+    logger.log(`[query], ${JSON.stringify(query)}`, 'info');
     if (!query.code) {
       throw new ConfigError({
         message: 'No code is passed!',

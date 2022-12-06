@@ -1,5 +1,6 @@
 import { getFixedDigitRandomNumber } from '../../utils/helpers';
 import { ConfigError, UnknownError } from '../../utils/errors';
+import { logger } from '../../utils/logger';
 
 async function sendMail({ body, apiKey }) {
 	const email = await fetch('https://api.sendgrid.com/v3/mail/send', {
@@ -23,7 +24,8 @@ export default async function send({ options }) {
 		apiKey,
 		templateId,
 		dynamicTemplateData,
-		text = 'Your verification code is: {OTP}'
+		text = 'Your verification code is: {OTP}',
+		isLogEnabled = false,
 	} = options;
 	const otp = getFixedDigitRandomNumber(otpLength);
 
@@ -72,14 +74,15 @@ export default async function send({ options }) {
 
 	try {
 		const res = await sendMail({ body, apiKey });
-		console.log('[success send]', res);
+		logger.setEnabled(isLogEnabled);
+		logger.log(`[success send], ${JSON.stringify(res)}`, 'info');
 		const savedData = await kvProvider.put(to, otp, {
 			expirationTtl
 		});
-		console.log('[savedData]', savedData);
+		logger.log(`[savedData], ${JSON.stringify(savedData)}`, 'info');
 		return res;
 	} catch (e) {
-		console.log('[error]', e.stack);
+		logger.log(`[error], ${JSON.stringify(e.stack)}`, 'error');
 		throw new UnknownError({
 			message: 'e.stack'
 		});

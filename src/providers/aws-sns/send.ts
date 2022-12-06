@@ -1,6 +1,7 @@
 import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
 import { getFixedDigitRandomNumber } from '../../utils/helpers';
 import { ConfigError, UnknownError } from '../../utils/errors';
+import { logger } from '../../utils/logger';
 
 export default async function send({ options }) {
 	const {
@@ -11,9 +12,9 @@ export default async function send({ options }) {
 		kvProvider,
 		expirationTtl = 60,
 		accessKeyId,
-		secretAccessKey
+		secretAccessKey,
+		isLogEnabled = false
 	} = options;
-
 	const client = new SNSClient({
 		region,
 		credentials: {
@@ -31,8 +32,6 @@ export default async function send({ options }) {
 
 	const otpMessage = message.replace('{OTP}', otp);
 
-	console.log('[region otp]', phone, region, otp, otpMessage);
-
 	const params = {
 		Message: otpMessage,
 		PhoneNumber: phone
@@ -41,16 +40,17 @@ export default async function send({ options }) {
 
 	try {
 		const data = await client.send(command);
-		console.log('[success send]', data);
+		logger.setEnabled(isLogEnabled);
+		logger.log(`[success send]', ${JSON.stringify(data)}`, 'info');
 		const savedData = await kvProvider.put(phone, otp, {
 			expirationTtl
 		});
-		console.log('[savedData]', savedData);
+		logger.log(`[savedData]: ${JSON.stringify(savedData)}`, 'info');
 		return data;
 	} catch (e) {
-		console.log('[error]', e.stack);
+		logger.log(`[error]: ${JSON.stringify(e.stack)}`, 'error');
 		throw new UnknownError({
-			message: 'e.stack'
+			message: e.stack
 		});
 	}
 }
