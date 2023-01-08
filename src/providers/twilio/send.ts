@@ -1,5 +1,6 @@
 import { getFixedDigitRandomNumber } from '../../utils/helpers';
 import { ConfigError, UnknownError } from '../../utils/errors';
+import { logger } from '../../utils/logger';
 
 export default async function send({ options }) {
 	const {
@@ -11,7 +12,8 @@ export default async function send({ options }) {
 		expirationTtl = 60,
 		accountSid,
 		authToken,
-		from = '+19388887573'
+		from = '+19388887573',
+		isLogEnabled = false,
 	} = options;
 	const endpoint = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
 	const otp = getFixedDigitRandomNumber(otpLength);
@@ -23,8 +25,10 @@ export default async function send({ options }) {
 	}
 
 	const otpMessage = message.replace('{OTP}', otp);
-
-	console.log('[region otp]', phone, region, otp, otpMessage);
+	logger.setEnabled(isLogEnabled);
+	logger.log(`[region otp], ${JSON.stringify({
+		phone, region, otp, otpMessage
+	})}`, 'info');
 
 	const encoded = new URLSearchParams();
 	encoded.append('To', phone);
@@ -48,10 +52,10 @@ export default async function send({ options }) {
 		const savedData = await kvProvider.put(phone, otp, {
 			expirationTtl
 		});
-		console.log('[savedData]', savedData);
+		logger.log(`[savedData], ${JSON.stringify(savedData)}`, 'info');
 		return data;
 	} catch (e) {
-		console.log('[error]', e.stack);
+		logger.log(`[error], ${JSON.stringify( e.stack)}`, 'error');
 		throw new UnknownError({
 			message: 'e.stack'
 		});
