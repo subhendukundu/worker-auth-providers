@@ -1,13 +1,14 @@
 type LogLevel = "debug" | "info" | "warning" | "error";
 
-const logLevels = {
+const logLevels: { [level in LogLevel]: (message: string) => void } = {
   debug: console.debug,
   info: console.info,
   warning: console.warn,
   error: console.error,
 };
 
-function logWithLevel(level: LogLevel) {
+
+function logWithLevel(level: LogLevel): (message: string) => void {
   return (message: string) => {
     const logger = logLevels[level];
     logger(message);
@@ -32,6 +33,7 @@ class Logger {
     this.enabled = value;
   }
 }
+
 
 export const logger = new Logger(false);
 

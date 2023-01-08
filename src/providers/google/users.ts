@@ -2,8 +2,19 @@ import { ConfigError, ProviderGetUserError, TokenError } from '../../utils/error
 import { parseQuerystring } from '../../utils/helpers';
 import { logger } from '../../utils/logger';
 
-async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl }) {
-  logger.log(`[redirectUrl], ${JSON.stringify(redirectUrl)}`, 'info');
+type Tokens = { [key: string]: any };
+
+type User = { [key: string]: any };
+
+type Options = {
+  clientId: string,
+  clientSecret: string,
+  redirectUrl: string,
+  isLogEnabled?: boolean,
+};
+
+async function getTokensFromCode(code: string, { redirectUrl, clientId, clientSecret }: Options): Promise<Tokens> {
+  logger.log(`[redirectUrl], ${redirectUrl}`, 'info');
 
   const params = {
     client_id: clientId,
@@ -32,7 +43,7 @@ async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl }) 
   return result;
 }
 
-async function getUser(token) {
+async function getUser(token: string): Promise<User> {
   try {
     const getUserResponse = await fetch(
       'https://www.googleapis.com/oauth2/v2/userinfo',
@@ -53,20 +64,20 @@ async function getUser(token) {
   }
 }
 
-export default async function callback({ options, request }) {
-    const { query }: any = parseQuerystring(request);
-    logger.setEnabled(options?.isLogEnabled || false);
-    logger.log(`[query], ${JSON.stringify(query)}`, 'info');
-    if (!query.code) {
-      throw new ConfigError({
-        message: 'No code is passed!',
-      });
-    }
-    const tokens = await getTokensFromCode(query.code, options);
-    const accessToken = tokens.access_token;
-    const providerUser = await getUser(accessToken);
-    return {
-      user: providerUser,
-      tokens
-    };
+export default async function callback({ options, request }: { options: Options, request: Request }): Promise<{ user: User, tokens: Tokens }> {
+  const { query }: any = parseQuerystring(request);
+  logger.setEnabled(options?.isLogEnabled || false);
+  logger.log(`[query], ${JSON.stringify(query)}`, 'info');
+  if (!query.code) {
+    throw new ConfigError({
+      message: 'No code is passed!',
+    });
+  }
+  const tokens = await getTokensFromCode(query.code, options);
+  const accessToken = tokens.access_token;
+  const providerUser = await getUser(accessToken);
+  return {
+    user: providerUser,
+    tokens
+  };
 }

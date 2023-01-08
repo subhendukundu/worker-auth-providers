@@ -3,7 +3,23 @@ import { getFixedDigitRandomNumber } from '../../utils/helpers';
 import { ConfigError, UnknownError } from '../../utils/errors';
 import { logger } from '../../utils/logger';
 
-export default async function send({ options }) {
+type Options = {
+	region: string;
+	otpLength?: number;
+	message?: string;
+	phone: string;
+	kvProvider: any;
+	expirationTtl?: number;
+	accessKeyId: string;
+	secretAccessKey: string;
+	isLogEnabled?: boolean;
+};
+
+type Props = {
+	options: Options;
+};
+
+export default async function send({ options }: Props): Promise<any> {
 	const {
 		region,
 		otpLength = 4,
@@ -18,9 +34,9 @@ export default async function send({ options }) {
 	const client = new SNSClient({
 		region,
 		credentials: {
-            accessKeyId,
-            secretAccessKey
-        }
+			accessKeyId,
+			secretAccessKey
+		}
 	});
 	const otp = getFixedDigitRandomNumber(otpLength);
 

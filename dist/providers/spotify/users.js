@@ -1,8 +1,9 @@
 import * as queryString from "query-string";
 import { ConfigError, ProviderGetUserError, TokenError } from '../../utils/errors';
 import { parseQuerystring } from '../../utils/helpers';
+import { logger } from "../../utils/logger";
 async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl }) {
-    console.log('[redirectUrl]', redirectUrl);
+    logger.log(`[redirectUrl], ${JSON.stringify(redirectUrl)}`, 'info');
     const params = queryString.stringify({
         redirect_uri: redirectUrl,
         code,
@@ -17,7 +18,7 @@ async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl }) 
         },
     });
     const result = await response.json();
-    console.log('[tokens]', result);
+    logger.log(`[tokens], ${JSON.stringify(result)}`, 'info');
     if (result.error) {
         throw new TokenError({
             message: result.error_description,
@@ -33,11 +34,11 @@ async function getUser(token) {
             },
         });
         const data = await getUserResponse.json();
-        console.log('[provider user data]', data);
+        logger.log(`[provider user data], ${JSON.stringify(data)}`, 'info');
         return data;
     }
     catch (e) {
-        console.log('[get user error]', e);
+        logger.log(`[query], ${JSON.stringify(e)}`, 'error');
         throw new ProviderGetUserError({
             message: 'There was an error fetching the user',
         });
@@ -45,7 +46,8 @@ async function getUser(token) {
 }
 export default async function callback({ options, request }) {
     const { query } = parseQuerystring(request);
-    console.log('[query]', query);
+    logger.setEnabled(options?.isLogEnabled || false);
+    logger.log(`[query], ${JSON.stringify(query)}`, 'info');
     if (!query.code) {
         throw new ConfigError({
             message: 'No code is paased!',

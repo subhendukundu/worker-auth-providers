@@ -1,7 +1,15 @@
 import * as queryString from 'query-string';
 import { ConfigError } from '../../utils/errors';
 
-export default async function redirect({ options }) {
+type GoogleOAuthOptions = {
+	clientId: string;
+	redirectUrl: string;
+	scope?: string;
+	responseType?: string;
+	state?: string;
+};
+
+export default async function redirect({ options }: { options: GoogleOAuthOptions }): Promise<string> {
 	const {
 		clientId,
 		redirectUrl,

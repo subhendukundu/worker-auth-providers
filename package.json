@@ -1,6 +1,6 @@
 {
   "name": "worker-auth-providers",
-  "version": "0.0.10-beta7",
+  "version": "0.0.10-beta9",
   "type": "module",
   "main": "src/index.ts",
   "repository": "https://github.com/subhendukundu/worker-auth-providers.git",

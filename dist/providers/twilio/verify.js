@@ -1,11 +1,10 @@
 import jwt from '@tsndr/cloudflare-worker-jwt';
 import { ProviderVerifyOtpError } from '../../utils/errors';
-function generateJWT({ secret, phone, claims }) {
+async function generateJWT({ secret, phone, claims }) {
     const customClaims = claims || {
         id: phone
     };
-    console.log('[claims, scret]', customClaims, secret);
-    return jwt.sign({ exp: '24h', ...customClaims }, secret, { algorithm: 'HS256' });
+    return jwt.sign({ exp: Math.floor(Date.now() / 1000) + (24 * (60 * 60)), ...customClaims }, secret, { algorithm: 'HS256' });
 }
 export default async function verify({ options }) {
     const { kvProvider, phone, otp, secret, claims } = options;
@@ -20,7 +19,6 @@ export default async function verify({ options }) {
         phone,
         claims
     }) : null;
-    console.log(token);
     await kvProvider.delete(phone);
     return token ? {
         id: phone,

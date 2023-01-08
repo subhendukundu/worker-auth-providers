@@ -1,5 +1,6 @@
 import { ConfigError, ProviderGetUserError, TokenError } from '../../utils/errors';
 import { parseQuerystring } from '../../utils/helpers';
+import { logger } from '../../utils/logger';
 async function getTokensFromCode(code, { clientId, clientSecret }) {
     const params = {
         client_id: clientId,
@@ -15,7 +16,7 @@ async function getTokensFromCode(code, { clientId, clientSecret }) {
         body: JSON.stringify(params),
     });
     const result = await response.json();
-    console.log('[tokens]', result);
+    logger.log(`[tokens], ${JSON.stringify(result)}`, 'info');
     if (result.error) {
         throw new TokenError({
             message: result.error_description,
@@ -23,20 +24,20 @@ async function getTokensFromCode(code, { clientId, clientSecret }) {
     }
     return result;
 }
-async function getUser(token) {
+async function getUser(token, userAgent = 'worker-auth-providers-github-oauth-login') {
     try {
         const headers = {
             accept: 'application/vnd.github.v3+json',
             authorization: `token ${token}`,
-            'user-agent': 'cool-bio-analytics-github-oauth-login',
+            'user-agent': userAgent,
         };
-        console.log('[user getUser headers]', headers);
+        logger.log(`[user getUser headers], ${JSON.stringify(headers)}`, 'info');
         const getUserResponse = await fetch('https://api.github.com/user', {
             method: 'GET',
             headers,
         });
         const data = await getUserResponse.json();
-        console.log('[provider user data]', data);
+        logger.log(`[provider user data], ${JSON.stringify(data)}`, 'info');
         if (!data.email) {
             // If the user does not have a public email, get another via the GitHub API
             // See https://docs.github.com/en/rest/users/emails#list-public-email-addresses-for-the-authenticated-user
@@ -45,14 +46,13 @@ async function getUser(token) {
                 headers,
             });
             const emails = await res.json();
-            console.log('[provider user emails]', emails);
             data.emails = emails;
             data.email = (emails.find((e) => e.primary) ?? emails[0]).email;
         }
         return data;
     }
     catch (e) {
-        console.log('[get user error]', e);
+        logger.log(`[error], ${JSON.stringify(e.stack)}`, 'error');
         throw new ProviderGetUserError({
             message: 'There was an error fetching the user',
         });
@@ -60,7 +60,8 @@ async function getUser(token) {
 }
 export default async function callback({ options, request }) {
     const { query } = parseQuerystring(request);
-    console.log('[code]', query.code);
+    logger.setEnabled(options?.isLogEnabled || false);
+    logger.log(`[code], ${JSON.stringify(query.code)}`, 'info');
     if (!query.code) {
         throw new ConfigError({
             message: 'No code is paased!',
@@ -68,8 +69,8 @@ export default async function callback({ options, request }) {
     }
     const tokens = await getTokensFromCode(query.code, options);
     const accessToken = tokens.access_token;
-    console.log('[access_token]', accessToken);
-    const providerUser = await getUser(accessToken);
+    logger.log(`[access_token], ${JSON.stringify(accessToken)}`, 'info');
+    const providerUser = await getUser(accessToken, options?.userAgent);
     return {
         user: providerUser,
         tokens

@@ -1,5 +1,6 @@
 import { ConfigError, ProviderGetUserError, TokenError } from '../../utils/errors';
 import { parseQuerystring } from '../../utils/helpers';
+import { logger } from '../../utils/logger';
 function _encode(obj) {
     let string = "";
     for (const [key, value] of Object.entries(obj)) {
@@ -10,7 +11,7 @@ function _encode(obj) {
     return string.substring(1);
 }
 async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl, scope = 'identify' }) {
-    console.log('[redirectUrl]', redirectUrl);
+    logger.log(`[redirectUrl]', ${JSON.stringify(redirectUrl)}`, 'info');
     const data = {
         'client_id': clientId,
         'client_secret': clientSecret,
@@ -26,7 +27,7 @@ async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl, sc
         body: params
     });
     const result = await response.json();
-    console.log('[tokens]', result);
+    logger.log(`[result]', ${JSON.stringify(result)}`, 'info');
     if (result.error) {
         throw new TokenError({
             message: result.error_description
@@ -42,11 +43,11 @@ async function getUser(oauthData) {
             }
         });
         const data = await getUserResponse.json();
-        console.log('[provider user data]', data);
+        logger.log(`[provider user data]', ${JSON.stringify(data)}`, 'info');
         return data;
     }
     catch (e) {
-        console.log('[get user error]', e);
+        logger.log(`[get user error]', ${e.message}`, 'error');
         throw new ProviderGetUserError({
             message: 'There was an error fetching the user'
         });
@@ -54,7 +55,8 @@ async function getUser(oauthData) {
 }
 export default async function callback({ options, request }) {
     const { query } = parseQuerystring(request);
-    console.log('[query]', query);
+    logger.setEnabled(options?.isLogEnabled);
+    logger.log(`[query]', ${JSON.stringify(query)}`, 'info');
     if (!query.code) {
         throw new ConfigError({
             message: 'No code is paased!'

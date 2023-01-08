@@ -12,6 +12,7 @@
       "declaration": true,
     },
     "exclude": [
-        "example"
+        "example",
+        "example-with-nextjs"
     ]
 }
