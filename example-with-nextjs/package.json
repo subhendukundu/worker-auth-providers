@@ -18,6 +18,7 @@
     "worker-auth-providers": "^0.0.10-beta11"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20221111.1",
     "@types/node": "^18.0.0",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
@@ -26,6 +27,6 @@
     "eslint-config-next": "12.2.0",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.4",
-    "typescript": "^4.7.4"
+    "typescript": "^4.9.4"
   }
 }

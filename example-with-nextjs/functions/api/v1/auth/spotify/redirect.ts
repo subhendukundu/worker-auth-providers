@@ -1,7 +1,9 @@
 import { NextRequest } from "next/server";
 import { spotify } from "worker-auth-providers";
 
-
+export const config = {
+  runtime: "experimental-edge",
+};
 
 export default async function (request: NextRequest) {
   const location =  await spotify.redirect({

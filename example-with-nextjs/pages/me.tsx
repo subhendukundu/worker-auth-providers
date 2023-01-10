@@ -8,30 +8,28 @@ export default function Me() {
   const [user, setUser] = useState<any>({});
   const { name, image } = user;
 
-  function onLogout(){
+  useEffect(() => {
+    async function getUser() {
+      const res = await fetch('/api/v1/user/me', {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      const data = await res.json();
+      setUser(data);
+    }
+    if (token) {
+      getUser();
+    } else {
+      router.push('/');
+    }
+  }, [token]);
+
+  function onLogout() {
     logout();
     router.push("/");
   }
 
-  useEffect(() => {
-    async function getUser() {
-        const res = await fetch('/api/v1/user/me', {
-            headers: { 'Authorization': `Bearer ${token}` },
-        });
-        const data = await res.json();
-        setUser(data);
-    }
-    if(token) {
-      getUser();
-    }
-  }, [token]);
-
   if (token === null) {
     return <div>loading...</div>;
-  }
-
-  if (!token) {
-    return router.push('/');
   }
 
   return (

@@ -1,6 +1,10 @@
-import { discord } from "worker-auth-providers";
-import jwt from "@tsndr/cloudflare-worker-jwt";
-import { NextRequest } from "next/server";
+import jwt from '@tsndr/cloudflare-worker-jwt';
+import { NextRequest } from 'next/server';
+import { google } from "worker-auth-providers";
+
+export const config = {
+    runtime: "experimental-edge",
+};
 
 function generateJWT(user: any) {
     const claims: any = {
@@ -11,32 +15,30 @@ function generateJWT(user: any) {
     return jwt.sign({ exp: Math.floor(Date.now() / 1000) + (24 * (60 * 60)), ...claims }, secret, { algorithm: 'HS256' });
 }
 
+const options = {
+    clientId: process.env.GOOGLE_CLIENT_ID as string,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    redirectUrl: process.env.GOOGLE_REDIRECT_PROD_URL as string,
+};
+
 async function createUser(user: any) {
-    console.log(user.id);
     const profile = {
         id: user.id,
-        name: user.username,
-        image: `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`,
+        name: user.name,
+        image: user.picture,
         email: user.email,
-    }
+    };
     //@ts-ignore
     return await WORKER_AUTH_PROVIDERS_STORE.put(user.id, JSON.stringify(profile));
 }
 
 export default async function (request: NextRequest) {
     try {
-        const { user: providerUser } = await discord.users({
-            options: {
-                clientId: process.env.DISCORD_CLIENT_ID as string,
-                clientSecret: process.env.DISCORD_CLIENT_SECRET as string,
-                redirectUrl: process.env.DISCORD_REDIRECT_PROD_URL as string,
-                scope: 'identify email',
-            },
-            request: {
-                url: request.url
-            },
+        const { user: providerUser } = await google.users({
+            options,
+            request,
         });
-        console.log("[providerUser]", providerUser);
+        console.log('[providerUser]', providerUser);
         await createUser(providerUser);
         const jwt = generateJWT(providerUser);
         console.log("[jwt]", jwt);

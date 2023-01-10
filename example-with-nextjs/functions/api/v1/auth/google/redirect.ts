@@ -1,6 +1,10 @@
 import { NextRequest } from "next/server";
 import * as queryString from "query-string";
 
+export const config = {
+    runtime: "experimental-edge",
+};
+
 const redirectUrl = process.env.GOOGLE_REDIRECT_PROD_URL as string;
 const clientId = process.env.GOOGLE_CLIENT_ID as string;
 

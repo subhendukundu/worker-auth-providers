@@ -1,10 +1,10 @@
-import { github } from "worker-auth-providers";
+import { discord } from "worker-auth-providers";
 import jwt from "@tsndr/cloudflare-worker-jwt";
 import { NextRequest } from "next/server";
 
-const clientId = process.env.GITHUB_CLIENT_ID as string;
-
-const clientSecret = process.env.GITHUB_CLIENT_SECRET as string;
+export const config = {
+    runtime: "experimental-edge",
+};
 
 function generateJWT(user: any) {
     const claims: any = {
@@ -19,19 +19,26 @@ async function createUser(user: any) {
     console.log(user.id);
     const profile = {
         id: user.id,
-        name: user.name,
-        image: user.avatar_url,
+        name: user.username,
+        image: `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`,
         email: user.email,
-    };
+    }
     //@ts-ignore
     return await WORKER_AUTH_PROVIDERS_STORE.put(user.id, JSON.stringify(profile));
 }
 
 export default async function (request: NextRequest) {
     try {
-        const { user: providerUser } = await github.users({
-            options: { clientSecret, clientId },
-            request,
+        const { user: providerUser } = await discord.users({
+            options: {
+                clientId: process.env.DISCORD_CLIENT_ID as string,
+                clientSecret: process.env.DISCORD_CLIENT_SECRET as string,
+                redirectUrl: process.env.DISCORD_REDIRECT_PROD_URL as string,
+                scope: 'identify email',
+            },
+            request: {
+                url: request.url
+            },
         });
         console.log("[providerUser]", providerUser);
         await createUser(providerUser);
