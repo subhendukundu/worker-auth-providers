@@ -55,7 +55,7 @@ async function getUser(oauthData) {
 }
 export default async function callback({ options, request }) {
     const { query } = parseQuerystring(request);
-    logger.setEnabled(options?.isLogEnabled);
+    logger.setEnabled(options?.isLogEnabled || false);
     logger.log(`[query]', ${JSON.stringify(query)}`, 'info');
     if (!query.code) {
         throw new ConfigError({

@@ -96,7 +96,7 @@ export default async function send({ options }: { options: SendOptions }): Promi
 		});
 		logger.log(`[savedData], ${JSON.stringify(savedData)}`, 'info');
 		return res;
-	} catch (e) {
+	} catch (e: any) {
 		logger.log(`[error], ${JSON.stringify(e.stack)}`, 'error');
 		throw new UnknownError({
 			message: 'e.stack'

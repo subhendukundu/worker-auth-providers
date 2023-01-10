@@ -32,7 +32,7 @@ async function getTokensFromCode(code: string, { redirectUrl, clientId, clientSe
     },
     body: JSON.stringify(params),
   });
-  const result = await response.json();
+  const result: Tokens = await response.json();
   logger.log(`[tokens], ${JSON.stringify(result)}`, 'info');
 
   if (result.error) {
@@ -53,10 +53,10 @@ async function getUser(token: string): Promise<User> {
         },
       },
     );
-    const data = await getUserResponse.json();
+    const data: User = await getUserResponse.json();
     logger.log(`[provider user data], ${JSON.stringify(data)}`, 'info');
     return data;
-  } catch (e) {
+  } catch (e: any) {
     logger.log(`[error], ${JSON.stringify(e.stack)}`, 'error');
     throw new ProviderGetUserError({
       message: 'There was an error fetching the user',

@@ -31,7 +31,7 @@ async function getTokensFromCode(code: string, { clientId, clientSecret, redirec
       'Authorization': `Basic ${token}`,
     },
   });
-  const result = await response.json();
+  const result: Tokens = await response.json();
   logger.log(`[tokens], ${JSON.stringify(result)}`, 'info');
 
   if (result.error) {
@@ -52,7 +52,7 @@ async function getUser(token: string): Promise<User> {
         },
       },
     );
-    const data = await getUserResponse.json();
+    const data: User = await getUserResponse.json();
     logger.log(`[provider user data], ${JSON.stringify(data)}`, 'info');
     return data;
   } catch (e) {

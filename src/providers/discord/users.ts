@@ -20,12 +20,7 @@ type Options = {
 };
 
 type Request = {
-	query: Query;
 	url: string;
-};
-
-type Query = {
-	code: string;
 };
 
 type CallbackResult = {
@@ -51,7 +46,7 @@ type GetTokensFromCodeOptions = {
 	scope?: string;
 };
 
-function _encode(obj) {
+function _encode(obj: any) {
 	let string = "";
 
 	for (const [key, value] of Object.entries(obj)) {
@@ -85,7 +80,7 @@ async function getTokensFromCode(
 		body: params
 	});
 
-	const result = await response.json();
+	const result: any = await response.json();
 	logger.log(`[result]', ${JSON.stringify(result)}`, 'info');
 
 	if (result.error) {
@@ -103,10 +98,10 @@ async function getUser(oauthData: Tokens): Promise<User> {
 				authorization: `${oauthData.token_type} ${oauthData.access_token}`,
 			}
 		});
-		const data = await getUserResponse.json();
+		const data: User = await getUserResponse.json();
 		logger.log(`[provider user data]', ${JSON.stringify(data)}`, 'info');
 		return data;
-	} catch (e) {
+	} catch (e: any) {
 		logger.log(`[get user error]', ${e.message}`, 'error');
 		throw new ProviderGetUserError({
 			message: 'There was an error fetching the user'
@@ -116,7 +111,7 @@ async function getUser(oauthData: Tokens): Promise<User> {
 
 export default async function callback({ options, request }: CallbackOptions): Promise<CallbackResult> {
 	const { query }: any = parseQuerystring(request);
-	logger.setEnabled(options?.isLogEnabled);
+	logger.setEnabled(options?.isLogEnabled || false);
 	logger.log(`[query]', ${JSON.stringify(query)}`, 'info');
 	if (!query.code) {
 		throw new ConfigError({

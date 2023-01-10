@@ -10,11 +10,7 @@ declare type Options = {
     isLogEnabled?: boolean;
 };
 declare type Request = {
-    query: Query;
     url: string;
-};
-declare type Query = {
-    code: string;
 };
 declare type CallbackResult = {
     user: User;

@@ -63,7 +63,7 @@ export default async function send({ options }: Props): Promise<any> {
 		});
 		logger.log(`[savedData]: ${JSON.stringify(savedData)}`, 'info');
 		return data;
-	} catch (e) {
+	} catch (e: any) {
 		logger.log(`[error]: ${JSON.stringify(e.stack)}`, 'error');
 		throw new UnknownError({
 			message: e.stack

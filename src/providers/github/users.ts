@@ -88,7 +88,7 @@ async function getTokensFromCode(
       body: JSON.stringify(params),
     },
   );
-  const result = await response.json();
+  const result: any = await response.json();
   logger.log(`[tokens], ${JSON.stringify(result)}`, 'info');
 
   if (result.error) {
@@ -111,21 +111,21 @@ async function getUser(token: string, userAgent: string = 'worker-auth-providers
       method: 'GET',
       headers,
     });
-    const data = await getUserResponse.json();
+    const data: User = await getUserResponse.json();
     logger.log(`[provider user data], ${JSON.stringify(data)}`, 'info');
     if (!data.email) {
       // If the user does not have a public email, get another via the GitHub API
       // See https://docs.github.com/en/rest/users/emails#list-public-email-addresses-for-the-authenticated-user
-      const res = await fetch("https://api.github.com/user/emails", {
+      const res: any = await fetch("https://api.github.com/user/emails", {
         method: 'GET',
         headers,
       });
       const emails = await res.json()
       data.emails = emails
-      data.email = (emails.find((e) => e.primary) ?? emails[0]).email
+      data.email = (emails.find((e: any) => e.primary) ?? emails[0]).email
     }
     return data;
-  } catch (e) {
+  } catch (e: any) {
     logger.log(`[error], ${JSON.stringify(e.stack)}`, 'error');
     throw new ProviderGetUserError({
       message: 'There was an error fetching the user',

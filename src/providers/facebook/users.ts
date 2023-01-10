@@ -44,7 +44,7 @@ async function getTokensFromCode(
     },
     body: JSON.stringify(params),
   });
-  const result = await response.json();
+  const result: any = await response.json();
   logger.log(`[tokens], ${JSON.stringify(result)}`, 'info');
 
   if (result.error) {
@@ -63,7 +63,7 @@ async function getUser(
     const getUserResponse = await fetch(
       `https://graph.facebook.com/me?fields=${fields}&access_token=${token}`
     );
-    const data = await getUserResponse.json();
+    const data: User = await getUserResponse.json();
     logger.log(`[provider user data], ${JSON.stringify(data)}`, 'info');
     return data;
   } catch (e) {

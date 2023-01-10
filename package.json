@@ -1,16 +1,18 @@
 {
   "name": "worker-auth-providers",
-  "version": "0.0.10-beta9",
+  "version": "0.0.10-beta11",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "repository": "https://github.com/subhendukundu/worker-auth-providers.git",
   "author": "Subh <subhendukundu14@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && tsc --build",
+    "build": "rm -rf dist && tsc",
     "prepare": "yarn build"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20221111.1",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
@@ -21,7 +23,7 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.210.0",
+    "@aws-sdk/client-sns": "^3.245.0",
     "@tsndr/cloudflare-worker-jwt": "^2.0.1",
     "query-string": "^7.0.1"
   }
