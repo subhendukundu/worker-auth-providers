@@ -1,6 +1,10 @@
 import { NextRequest } from 'next/server';
 import { discord } from "worker-auth-providers";
 
+export const config = {
+  runtime: "experimental-edge",
+};
+
 export default async function (request: NextRequest) {
   const location = await discord.redirect({
     options: {

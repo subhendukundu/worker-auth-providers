@@ -2,6 +2,9 @@ import jwt from "@tsndr/cloudflare-worker-jwt";
 import { NextRequest } from "next/server";
 import { getJwt } from '../../../../lib/utils/session';
 
+export const config = {
+  runtime: "experimental-edge",
+};
 
 export default async function (request: NextRequest) {
   if (request.method !== "GET") {

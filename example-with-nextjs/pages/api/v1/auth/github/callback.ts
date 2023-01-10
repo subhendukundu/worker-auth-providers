@@ -2,6 +2,10 @@ import { github } from "worker-auth-providers";
 import jwt from "@tsndr/cloudflare-worker-jwt";
 import { NextRequest } from "next/server";
 
+export const config = {
+    runtime: "experimental-edge",
+};
+
 const clientId = process.env.GITHUB_CLIENT_ID as string;
 
 const clientSecret = process.env.GITHUB_CLIENT_SECRET as string;

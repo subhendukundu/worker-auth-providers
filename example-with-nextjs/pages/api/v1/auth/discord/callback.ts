@@ -2,6 +2,10 @@ import { discord } from "worker-auth-providers";
 import jwt from "@tsndr/cloudflare-worker-jwt";
 import { NextRequest } from "next/server";
 
+export const config = {
+    runtime: "experimental-edge",
+};
+
 function generateJWT(user: any) {
     const claims: any = {
         user_id: user?.id,
