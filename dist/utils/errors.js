@@ -1,7 +1,7 @@
 export class UnknownError extends Error {
-    constructor({ name = 'UnknownError', message }) {
-        super(message);
-        this.name = name;
+    constructor(params) {
+        super(params.message);
+        this.name = params.name || 'UnknownError';
     }
 }
 export class ConfigError extends UnknownError {

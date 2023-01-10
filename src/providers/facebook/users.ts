@@ -2,7 +2,31 @@ import { ConfigError, ProviderGetUserError, TokenError } from '../../utils/error
 import { parseQuerystring } from '../../utils/helpers';
 import { logger } from '../../utils/logger';
 
-async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl }) {
+type CallbackOptions = {
+  options: Options,
+  request: Request
+}
+
+type Options = {
+  clientId: string;
+  clientSecret: string;
+  redirectUrl: string;
+  fields?: string;
+  isLogEnabled?: boolean;
+}
+
+type User = {
+  id: string,
+  email: string,
+  first_name: string,
+  last_name: string
+}
+
+
+async function getTokensFromCode(
+  code: string,
+  { clientId, clientSecret, redirectUrl }: Options
+): Promise<{ access_token: string, token_type: string, expires_in: number }> {
   logger.log(`[redirectUrl], ${JSON.stringify(redirectUrl)}`, 'info');
 
   const params = {
@@ -20,7 +44,7 @@ async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl }) 
     },
     body: JSON.stringify(params),
   });
-  const result = await response.json();
+  const result: any = await response.json();
   logger.log(`[tokens], ${JSON.stringify(result)}`, 'info');
 
   if (result.error) {
@@ -31,12 +55,15 @@ async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl }) 
   return result;
 }
 
-async function getUser(token, fields = 'id,email,first_name,last_name') {
+async function getUser(
+  token: string,
+  fields = 'id,email,first_name,last_name'
+): Promise<User> {
   try {
     const getUserResponse = await fetch(
       `https://graph.facebook.com/me?fields=${fields}&access_token=${token}`
     );
-    const data = await getUserResponse.json();
+    const data: User = await getUserResponse.json();
     logger.log(`[provider user data], ${JSON.stringify(data)}`, 'info');
     return data;
   } catch (e) {
@@ -47,20 +74,23 @@ async function getUser(token, fields = 'id,email,first_name,last_name') {
   }
 }
 
-export default async function callback({ options, request }) {
-    const { query }: any = parseQuerystring(request);
-    logger.setEnabled(options?.isLogEnabled || false);
-    logger.log(`[query], ${JSON.stringify(query)}`, 'info');
-    if (!query.code) {
-      throw new ConfigError({
-        message: 'No code is paased!',
-      });
-    }
-    const tokens = await getTokensFromCode(query.code, options);
-    const accessToken = tokens.access_token;
-    const providerUser = await getUser(accessToken, options.fields);
-    return {
-      user: providerUser,
-      tokens
-    };
+export default async function callback({ options, request }: CallbackOptions): Promise<{
+  user: any;
+  tokens: any;
+}> {
+  const { query }: any = parseQuerystring(request);
+  logger.setEnabled(options?.isLogEnabled || false);
+  logger.log(`[query], ${JSON.stringify(query)}`, 'info');
+  if (!query.code) {
+    throw new ConfigError({
+      message: 'No code is paased!',
+    });
+  }
+  const tokens = await getTokensFromCode(query.code, options);
+  const accessToken = tokens.access_token;
+  const providerUser = await getUser(accessToken, options.fields);
+  return {
+    user: providerUser,
+    tokens
+  };
 }

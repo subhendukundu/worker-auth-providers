@@ -1,7 +1,7 @@
 export declare class UnknownError extends Error {
-    constructor({ name, message }: {
+    constructor(params: {
         name?: string;
-        message: any;
+        message: string;
     });
 }
 export declare class ConfigError extends UnknownError {

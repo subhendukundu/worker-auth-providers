@@ -1,6 +1,6 @@
 import * as queryString from 'query-string';
 import { ConfigError } from '../../utils/errors';
-export default async function redirect({ options }) {
+export default async function redirect(options) {
     const { clientId, redirectUrl, scope = 'email, user_friends', responseType = 'code', authType = 'rerequest', display = 'popup' } = options;
     if (!clientId) {
         throw new ConfigError({

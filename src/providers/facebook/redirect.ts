@@ -1,7 +1,17 @@
 import * as queryString from 'query-string';
 import { ConfigError } from '../../utils/errors';
 
-export default async function redirect({ options }) {
+type RedirectOptions = {
+	clientId: string;
+	redirectUrl: string;
+	scope?: string;
+	responseType?: string;
+	authType?: string;
+	display?: string;
+  };
+  
+
+export default async function redirect(options: RedirectOptions): Promise<string> {
 	const {
 		clientId,
 		redirectUrl,

@@ -1,7 +1,20 @@
+declare type Tokens = {
+    [key: string]: any;
+};
+declare type User = {
+    [key: string]: any;
+};
+export declare type Options = {
+    clientId: string;
+    clientSecret: string;
+    redirectUrl: string;
+    isLogEnabled?: boolean;
+};
 export default function callback({ options, request }: {
-    options: any;
-    request: any;
+    options: Options;
+    request: Request;
 }): Promise<{
-    user: any;
-    tokens: any;
+    user: User;
+    tokens: Tokens;
 }>;
+export {};

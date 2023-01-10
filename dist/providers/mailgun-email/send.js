@@ -1,5 +1,6 @@
 import { getFixedDigitRandomNumber } from '../../utils/helpers';
 import { ConfigError, UnknownError } from '../../utils/errors';
+import { logger } from '../../utils/logger';
 function urlEncodeObject(obj) {
     return Object.keys(obj)
         .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(obj[k])}`)
@@ -19,7 +20,8 @@ function sendMail({ params, apiKey, baseUrl }) {
     return fetch(`${baseUrl}/messages`, opts);
 }
 export default async function send({ options }) {
-    const { from, to, subject, otpLength = 4, text = 'Your verification code is: {OTP}', html, kvProvider, expirationTtl = 60, baseUrl, apiKey } = options;
+    const { from, to, subject, otpLength = 4, text = 'Your verification code is: {OTP}', html, kvProvider, expirationTtl = 60, baseUrl, apiKey, isLogEnabled = false, } = options;
+    logger.setEnabled(isLogEnabled);
     const otp = getFixedDigitRandomNumber(otpLength);
     if (otpLength < 4) {
         throw new ConfigError({
@@ -29,7 +31,7 @@ export default async function send({ options }) {
     const otpMessage = html
         ? html.replace('{OTP}', otp)
         : text.replace('{OTP}', otp);
-    console.log('[region otp]', otp, otpMessage);
+    logger.log(`[region otp], ${JSON.stringify(otpMessage)}`, 'info');
     const params = {
         from,
         to,
@@ -38,15 +40,15 @@ export default async function send({ options }) {
     };
     try {
         const res = await sendMail({ params, baseUrl, apiKey });
-        console.log('[success send]', res);
+        logger.log(`[success send], ${JSON.stringify(res)}`, 'info');
         const savedData = await kvProvider.put(to, otp, {
             expirationTtl
         });
-        console.log('[savedData]', savedData);
+        logger.log(`[savedData], ${JSON.stringify(savedData)}`, 'info');
         return res;
     }
     catch (e) {
-        console.log('[error]', e.stack);
+        logger.log(`[error], ${JSON.stringify(e.stack)}`, 'error');
         throw new UnknownError({
             message: 'e.stack'
         });

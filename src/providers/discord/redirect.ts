@@ -1,7 +1,23 @@
 import * as queryString from 'query-string';
 import { ConfigError } from '../../utils/errors';
 
-export default async function redirect({ options }) {
+type Options = {
+	clientId: string;
+	redirectUrl: string;
+	scope?: string;
+	responseType?: string;
+	prompt?: string;
+	permissions?: string;
+	guildId?: string;
+	disableGuildSelect?: boolean;
+	state?: any;
+};
+
+type Props = {
+	options: Options
+}
+
+export default async function redirect({ options }: Props): Promise<string> {
 	const {
 		clientId,
 		redirectUrl,

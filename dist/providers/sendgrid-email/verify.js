@@ -4,8 +4,7 @@ function generateJWT({ secret, to, claims }) {
     const customClaims = claims || {
         id: to
     };
-    console.log('[claims, scret]', customClaims, secret);
-    return jwt.sign({ exp: '24h', ...customClaims }, secret, { algorithm: 'HS256' });
+    return jwt.sign({ exp: Math.floor(Date.now() / 1000) + (24 * (60 * 60)), ...customClaims }, secret, { algorithm: 'HS256' });
 }
 export default async function verify({ options }) {
     const { kvProvider, to, otp, secret, claims } = options;
@@ -20,7 +19,6 @@ export default async function verify({ options }) {
         to,
         claims
     }) : null;
-    console.log(token);
     await kvProvider.delete(to);
     return token ? {
         id: to,

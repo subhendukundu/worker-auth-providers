@@ -1,7 +1,15 @@
 import * as queryString from 'query-string';
 import { ConfigError } from '../../utils/errors';
 
-export default async function redirect({ options }) {
+type SpotifyOAuthOptions = {
+	clientId: string;
+	redirectUrl: string;
+	scope?: string;
+	responseType?: string;
+	showDialog?: boolean;
+};
+
+export default async function redirect({ options }: { options: SpotifyOAuthOptions }): Promise<string> {
 	const {
 		clientId,
 		redirectUrl,

@@ -2,7 +2,21 @@ import { getFixedDigitRandomNumber } from '../../utils/helpers';
 import { ConfigError, UnknownError } from '../../utils/errors';
 import { logger } from '../../utils/logger';
 
-async function sendMail({ body, apiKey }) {
+type SendOptions = {
+	from: string;
+	to: string;
+	subject?: string;
+	otpLength?: number;
+	kvProvider: any;
+	expirationTtl?: number;
+	apiKey: string;
+	templateId?: string;
+	dynamicTemplateData?: any;
+	text?: string;
+	isLogEnabled?: boolean;
+};
+
+async function sendMail({ body, apiKey }: { body: any, apiKey: string }): Promise<Response> {
 	const email = await fetch('https://api.sendgrid.com/v3/mail/send', {
 		body: JSON.stringify(body),
 		headers: {
@@ -13,7 +27,8 @@ async function sendMail({ body, apiKey }) {
 	});
 	return email;
 }
-export default async function send({ options }) {
+
+export default async function send({ options }: { options: SendOptions }): Promise<Response> {
 	const {
 		from,
 		to,
@@ -37,24 +52,24 @@ export default async function send({ options }) {
 
 	const templateContent = templateId
 		? {
-				template_id: templateId
-		  }
+			template_id: templateId
+		}
 		: {
-				content: [
-					{
-						type: 'text/plain',
-						value: text.replace('{OTP}', otp)
-					}
-				]
-		  };
+			content: [
+				{
+					type: 'text/plain',
+					value: text.replace('{OTP}', otp)
+				}
+			]
+		};
 
 	const personalizedData = templateId
 		? {
-				dynamic_template_data: dynamicTemplateData
-		  }
+			dynamic_template_data: dynamicTemplateData
+		}
 		: {
-				subject
-		  };
+			subject
+		};
 	const body = {
 		from: {
 			email: from
@@ -81,7 +96,7 @@ export default async function send({ options }) {
 		});
 		logger.log(`[savedData], ${JSON.stringify(savedData)}`, 'info');
 		return res;
-	} catch (e) {
+	} catch (e: any) {
 		logger.log(`[error], ${JSON.stringify(e.stack)}`, 'error');
 		throw new UnknownError({
 			message: 'e.stack'

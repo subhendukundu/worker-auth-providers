@@ -1,3 +1,7 @@
+declare type Options = {
+    clientId: string;
+};
 export default function redirect({ options }: {
-    options: any;
+    options: Options;
 }): Promise<string>;
+export {};

@@ -2,13 +2,40 @@ import { getFixedDigitRandomNumber } from '../../utils/helpers';
 import { ConfigError, UnknownError } from '../../utils/errors';
 import { logger } from '../../utils/logger';
 
-function urlEncodeObject(obj) {
+type SendOptions = {
+	from: string,
+	to: string,
+	subject: string,
+	otpLength?: number,
+	text?: string,
+	html?: string,
+	kvProvider: { [key: string]: any },
+	expirationTtl?: number,
+	baseUrl: string,
+	apiKey: string,
+	isLogEnabled?: boolean,
+};
+
+type SendParams = {
+	from: string,
+	to: string,
+	subject: string,
+	html: string,
+};
+
+type sendMailOptions = {
+	params: SendParams,
+	apiKey: string,
+	baseUrl: string
+};
+
+function urlEncodeObject(obj: { [key: string]: any }): string {
 	return Object.keys(obj)
 		.map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(obj[k])}`)
 		.join('&');
 }
 
-function sendMail({ params, apiKey, baseUrl }) {
+function sendMail({ params, apiKey, baseUrl }: sendMailOptions) {
 	const dataUrlEncoded = urlEncodeObject(params);
 	const opts = {
 		method: 'POST',
@@ -23,7 +50,7 @@ function sendMail({ params, apiKey, baseUrl }) {
 	return fetch(`${baseUrl}/messages`, opts);
 }
 
-export default async function send({ options }) {
+export default async function send({ options }: { options: SendOptions }): Promise<Response> {
 	const {
 		from,
 		to,
@@ -67,7 +94,7 @@ export default async function send({ options }) {
 		});
 		logger.log(`[savedData], ${JSON.stringify(savedData)}`, 'info');
 		return res;
-	} catch (e) {
+	} catch (e: any) {
 		logger.log(`[error], ${JSON.stringify(e.stack)}`, 'error');
 		throw new UnknownError({
 			message: 'e.stack'
