@@ -10,7 +10,7 @@ function generateJWT(user: any, secret: string) {
     return jwt.sign({ exp: Math.floor(Date.now() / 1000) + (24 * (60 * 60)), ...claims }, secret, { algorithm: 'HS256' });
 }
 
-async function createUser(user: any, env) {
+async function createUser(user: any, env: any) {
     console.log(user.id);
     const profile = {
         id: user.id,
