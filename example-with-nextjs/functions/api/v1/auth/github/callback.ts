@@ -1,6 +1,5 @@
 import { github } from "worker-auth-providers";
 import jwt from "@tsndr/cloudflare-worker-jwt";
-import { NextRequest } from "next/server";
 
 function generateJWT(user: any, secret: string) {
     const claims: any = {
