@@ -1,31 +1,20 @@
 import * as queryString from "query-string";
 import { ConfigError } from "../../utils/errors";
-
-type Options = {
-  clientId: string;
-  redirectTo?: string;
-  scope?: string[];
-  allowSignup?: boolean;
-};
-
-type Params = {
-  client_id: string;
-  redirect_uri?: string;
-  scope: string;
-  allow_signup?: boolean;
-};
+import { Github } from "./types";
+import { BaseProvider } from "../../types";
 
 const DEFAULT_SCOPE = ["read:user", "user:email"];
 const DEFAULT_ALLOW_SIGNUP = true;
 
-export default async function redirect({ options }: { options: Options }): Promise<string> {
+export default async function redirect({ options }: BaseProvider.RedirectOptions): Promise<string> {
   const { clientId, redirectTo, scope = DEFAULT_SCOPE, allowSignup = DEFAULT_ALLOW_SIGNUP } = options;
   if (!clientId) {
     throw new ConfigError({
       message: "No client id passed"
     });
   }
-  const params: Params = {
+
+  const params: Github.Params = {
     client_id: clientId,
     scope: scope.join(" "),
     allow_signup: allowSignup,
