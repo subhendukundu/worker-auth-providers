@@ -6,7 +6,7 @@ import * as discord from './providers/discord';
 import * as spotify from './providers/spotify';
 import * as sendgridEmail from './providers/sendgrid-email';
 import * as mailgunEmail from './providers/mailgun-email';
-
+export * from "./types"
 export {
 	github,
 	google,

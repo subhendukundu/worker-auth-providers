@@ -1,76 +1,13 @@
+import { BaseProvider, OAuthTokens } from '../../types';
 import { ConfigError, ProviderGetUserError, TokenError } from '../../utils/errors';
 import { parseQuerystring } from '../../utils/helpers';
 import { logger } from '../../utils/logger';
-
-type TokensResponse = {
-  access_token: string;
-  scope: string;
-  token_type: string;
-}
-export type CallbackOptions = {
-  options: {
-    clientId: string;
-    clientSecret: string;
-    userAgent?: string;
-    isLogEnabled?: boolean;
-  },
-  request: Request
-};
-
-export type User = {
-  id: number;
-  login: string;
-  node_id: string;
-  avatar_url: string;
-  gravatar_id: string;
-  url: string;
-  html_url: string;
-  followers_url: string;
-  following_url: string;
-  gists_url: string;
-  starred_url: string;
-  subscriptions_url: string;
-  organizations_url: string;
-  repos_url: string;
-  events_url: string;
-  received_events_url: string;
-  type: string;
-  site_admin: boolean;
-  name: string;
-  company: string;
-  blog: string;
-  location: string;
-  email: string | null;
-  hireable: boolean;
-  bio: string;
-  public_repos: number;
-  public_gists: number;
-  followers: number;
-  following: number;
-  created_at: string;
-  updated_at: string;
-  emails: {
-    email: string;
-    primary: boolean;
-    verified: boolean;
-    visibility: string;
-  }[] | null;
-};
-
-export type Tokens = {
-  access_token: string;
-  token_type: string;
-};
-
-export type CallbackResult = {
-  user: User;
-  tokens: Tokens;
-};
+import { Github } from "./types"
 
 async function getTokensFromCode(
   code: string,
-  { clientId, clientSecret }: { clientId: string, clientSecret: string }
-): Promise<TokensResponse> {
+  { clientId, clientSecret }: BaseProvider.TokensFromCodeOptions
+): Promise<OAuthTokens> {
   const params = {
     client_id: clientId,
     client_secret: clientSecret,
@@ -96,10 +33,10 @@ async function getTokensFromCode(
       message: result.error_description,
     });
   }
-  return result as TokensResponse;
+  return result as OAuthTokens;
 }
 
-async function getUser(token: string, userAgent: string = 'worker-auth-providers-github-oauth-login'): Promise<User> {
+async function getUser(token: string, userAgent: string = 'worker-auth-providers-github-oauth-login'): Promise<Github.UserResponse> {
   try {
     const headers = {
       accept: 'application/vnd.github.v3+json',
@@ -111,7 +48,7 @@ async function getUser(token: string, userAgent: string = 'worker-auth-providers
       method: 'GET',
       headers,
     });
-    const data: User = await getUserResponse.json();
+    const data: Github.UserResponse = await getUserResponse.json();
     logger.log(`[provider user data], ${JSON.stringify(data)}`, 'info');
     if (!data.email) {
       // If the user does not have a public email, get another via the GitHub API
@@ -133,7 +70,7 @@ async function getUser(token: string, userAgent: string = 'worker-auth-providers
   }
 }
 
-export default async function callback({ options, request }: CallbackOptions): Promise<CallbackResult> {
+export default async function callback({ options, request }: BaseProvider.CallbackOptions): Promise<Github.CallbackResponse> {
   const { query }: any = parseQuerystring(request);
   logger.setEnabled(options?.isLogEnabled || false);
   logger.log(`[code], ${JSON.stringify(query.code)}`, 'info');
