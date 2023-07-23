@@ -64,6 +64,8 @@ export namespace BaseProvider {
 			responseType?: string,
 			showDialog?: boolean,
             allowSignup?: boolean,
+			state?: string,
+			responseMode?: "query" | "fragment" | "form_post",
 		}
 	}
 }

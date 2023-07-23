@@ -25,6 +25,7 @@
   "dependencies": {
     "@aws-sdk/client-sns": "^3.245.0",
     "@tsndr/cloudflare-worker-jwt": "^2.0.1",
+    "jose": "^4.14.4",
     "query-string": "^7.0.1"
   }
 }
