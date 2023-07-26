@@ -1,4 +1,4 @@
-import { importPKCS8, SignJWT } from "jose";
+import { importPKCS8, SignJWT, decodeJwt } from "jose";
 import { BaseProvider, OAuthTokens } from "../../types";
 import {
   ConfigError,
@@ -78,14 +78,7 @@ async function getTokensFromCode(
 
 async function getUser(token: string): Promise<Apple.UserResponse> {
   try {
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    const getUserResponse = await fetch("https://appleid.apple.com/auth/user", {
-      method: "POST",
-      headers,
-    });
-    const data: Apple.UserResponse = await getUserResponse.json();
+    const data = decodeJwt(token) as Apple.UserResponse;
     logger.log(`[provider user data], ${JSON.stringify(data)}`, "info");
     return data;
   } catch (e: any) {
