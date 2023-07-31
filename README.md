@@ -100,6 +100,7 @@ Please adhere to this project's [code of conduct](code-of-conduct.md).
 
 - [ ] Docs.
 - [x] Apple.
+- [ ] Azure (Microsoft)
 - [x] Google.
 - [x] Github
 - [x] OTP Twilio
