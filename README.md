@@ -99,6 +99,8 @@ Please adhere to this project's [code of conduct](code-of-conduct.md).
 ## Roadmap
 
 - [ ] Docs.
+- [x] Apple.
+- [ ] Azure (Microsoft)
 - [x] Google.
 - [x] Github
 - [x] OTP Twilio

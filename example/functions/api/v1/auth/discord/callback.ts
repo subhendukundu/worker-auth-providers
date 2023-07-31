@@ -5,7 +5,7 @@ function generateJWT(user: any) {
     const claims: any = {
         user_id: user?.id,
     };
-    const secret = process.env.VITEDGE_ENCODE_JWT_TOKEN;
+    const secret = process.env.VITEDGE_ENCODE_JWT_TOKEN as string;
     console.log("[claims, scret]", claims, secret);
     return jwt.sign(claims, secret, { algorithm: "HS256", expiresIn: "24h" });
 }
