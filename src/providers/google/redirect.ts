@@ -1,36 +1,42 @@
-import * as queryString from 'query-string';
-import { ConfigError } from '../../utils/errors';
+import * as queryString from "query-string";
+import { ConfigError } from "../../utils/errors";
+import { BaseProvider } from "../../types";
 
-type GoogleOAuthOptions = {
-	clientId: string;
-	redirectUrl: string;
-	scope?: string;
-	responseType?: string;
-	state?: string;
-};
+export default async function redirect({
+  options,
+}: BaseProvider.RedirectOptions): Promise<string> {
+  const {
+    clientId,
+    redirectUrl, // Deprecated, use redirectTo instead
+    redirectTo, // Use this instead of redirectUrl
+    scope = "openid email profile",
+    responseType = "code",
+    state = "pass-through value",
+  } = options;
+  if (!clientId) {
+    throw new ConfigError({
+      message: "No client id passed",
+    });
+  }
 
-export default async function redirect({ options }: { options: GoogleOAuthOptions }): Promise<string> {
-	const {
-		clientId,
-		redirectUrl,
-		scope = 'openid email profile',
-		responseType = 'code',
-		state = 'pass-through value'
-	} = options;
-	if (!clientId) {
-		throw new ConfigError({
-			message: 'No client id passed'
-		});
-	}
-	const params = queryString.stringify({
-		client_id: clientId,
-		redirect_uri: redirectUrl,
-		response_type: responseType,
-		scope,
-		include_granted_scopes: 'true',
-		state
-	});
+  if (redirectUrl && !redirectTo) {
+    // If redirectUrl is provided but redirectTo is not, use redirectUrl (backward compatibility)
+    console.warn(
+      "The 'redirectUrl' option is deprecated. Please use 'redirectTo' instead."
+    );
+  }
 
-	const url = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
-	return url;
+  const usedRedirect = redirectTo || redirectUrl; // Use redirectTo if provided, else fallback to redirectUrl
+
+  const params = queryString.stringify({
+    client_id: clientId,
+    redirect_uri: usedRedirect,
+    response_type: responseType,
+    scope,
+    include_granted_scopes: "true",
+    state,
+  });
+
+  const url = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
+  return url;
 }

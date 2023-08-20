@@ -1,2 +1,3 @@
-export { default as users, getUser, getTokensFromCode } from './users';
-export { default as redirect } from './redirect';
+import { SocialProvider } from "../../types";
+export * from "./types";
+export declare const provider: SocialProvider<any>;
