@@ -26,5 +26,13 @@ declare type Tokens = {
     refresh_token: string;
     scope: string;
 };
+declare type GetTokensFromCodeOptions = {
+    clientId: string;
+    clientSecret: string;
+    redirectUrl: string;
+    scope?: string;
+};
+export declare function getTokensFromCode(code: string, { clientId, clientSecret, redirectUrl, scope }: GetTokensFromCodeOptions): Promise<Tokens>;
+export declare function getUser(oauthData: Tokens): Promise<User>;
 export default function callback({ options, request }: CallbackOptions): Promise<CallbackResult>;
 export {};

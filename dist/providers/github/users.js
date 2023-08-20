@@ -1,7 +1,7 @@
 import { ConfigError, ProviderGetUserError, TokenError } from '../../utils/errors';
 import { parseQuerystring } from '../../utils/helpers';
 import { logger } from '../../utils/logger';
-async function getTokensFromCode(code, { clientId, clientSecret }) {
+export async function getTokensFromCode(code, { clientId, clientSecret }) {
     const params = {
         client_id: clientId,
         client_secret: clientSecret,
@@ -24,7 +24,7 @@ async function getTokensFromCode(code, { clientId, clientSecret }) {
     }
     return result;
 }
-async function getUser(token, userAgent = 'worker-auth-providers-github-oauth-login') {
+export async function getUser(token, userAgent = 'worker-auth-providers-github-oauth-login') {
     try {
         const headers = {
             accept: 'application/vnd.github.v3+json',

@@ -15,7 +15,7 @@ export type Options = {
 };
 
 
-async function getTokensFromCode(code: string, { clientId, clientSecret, redirectUrl }: Options): Promise<Tokens> {
+export async function getTokensFromCode(code: string, { clientId, clientSecret, redirectUrl }: Options): Promise<Tokens> {
   logger.log(`[redirectUrl], ${JSON.stringify(redirectUrl)}`, 'info');
 
   const params = queryString.stringify({
@@ -42,7 +42,7 @@ async function getTokensFromCode(code: string, { clientId, clientSecret, redirec
   return result;
 }
 
-async function getUser(token: string): Promise<User> {
+export async function getUser(token: string): Promise<User> {
   try {
     const getUserResponse = await fetch(
       'https://api.spotify.com/v1/me',

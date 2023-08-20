@@ -2,7 +2,7 @@ import * as queryString from "query-string";
 import { ConfigError, ProviderGetUserError, TokenError } from '../../utils/errors';
 import { parseQuerystring } from '../../utils/helpers';
 import { logger } from "../../utils/logger";
-async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl }) {
+export async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl }) {
     logger.log(`[redirectUrl], ${JSON.stringify(redirectUrl)}`, 'info');
     const params = queryString.stringify({
         redirect_uri: redirectUrl,
@@ -26,7 +26,7 @@ async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl }) 
     }
     return result;
 }
-async function getUser(token) {
+export async function getUser(token) {
     try {
         const getUserResponse = await fetch('https://api.spotify.com/v1/me', {
             headers: {

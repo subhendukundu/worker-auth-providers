@@ -10,7 +10,7 @@ function _encode(obj) {
     }
     return string.substring(1);
 }
-async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl, scope = 'identify' }) {
+export async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl, scope = 'identify' }) {
     logger.log(`[redirectUrl]', ${JSON.stringify(redirectUrl)}`, 'info');
     const data = {
         'client_id': clientId,
@@ -35,7 +35,7 @@ async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl, sc
     }
     return result;
 }
-async function getUser(oauthData) {
+export async function getUser(oauthData) {
     try {
         const getUserResponse = await fetch('https://discord.com/api/users/@me', {
             headers: {
