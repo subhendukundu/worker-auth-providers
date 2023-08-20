@@ -59,7 +59,7 @@ function _encode(obj: any) {
 
 
 
-async function getTokensFromCode(
+export async function getTokensFromCode(
 	code: string,
 	{ clientId, clientSecret, redirectUrl, scope = 'identify' }: GetTokensFromCodeOptions
 ): Promise<Tokens> {
@@ -91,7 +91,7 @@ async function getTokensFromCode(
 	return result;
 }
 
-async function getUser(oauthData: Tokens): Promise<User> {
+export async function getUser(oauthData: Tokens): Promise<User> {
 	try {
 		const getUserResponse = await fetch('https://discord.com/api/users/@me', {
 			headers: {

@@ -4,7 +4,7 @@ import { parseQuerystring } from '../../utils/helpers';
 import { logger } from '../../utils/logger';
 import { Gitlab } from "./types"
 
-async function getTokensFromCode(
+export async function getTokensFromCode(
   code: string,
   { clientId, clientSecret, redirectUrl }: BaseProvider.TokensFromCodeOptions
 ): Promise<OAuthTokens> {
@@ -38,7 +38,7 @@ async function getTokensFromCode(
   return result as OAuthTokens;
 }
 
-async function getUser(token: string): Promise<Gitlab.UserResponse> {
+export async function getUser(token: string): Promise<Gitlab.UserResponse> {
   try {
     const headers = {
       Authorization: `Bearer ${token}`,

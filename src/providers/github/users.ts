@@ -4,7 +4,7 @@ import { parseQuerystring } from '../../utils/helpers';
 import { logger } from '../../utils/logger';
 import { Github } from "./types"
 
-async function getTokensFromCode(
+export async function getTokensFromCode(
   code: string,
   { clientId, clientSecret }: BaseProvider.TokensFromCodeOptions
 ): Promise<OAuthTokens> {
@@ -36,7 +36,7 @@ async function getTokensFromCode(
   return result as OAuthTokens;
 }
 
-async function getUser(token: string, userAgent: string = 'worker-auth-providers-github-oauth-login'): Promise<Github.UserResponse> {
+export async function getUser(token: string, userAgent: string = 'worker-auth-providers-github-oauth-login'): Promise<Github.UserResponse> {
   try {
     const headers = {
       accept: 'application/vnd.github.v3+json',

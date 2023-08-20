@@ -45,7 +45,7 @@ export async function convertPrivateKeyToClientSecret({
   return clientSecret;
 }
 
-async function getTokensFromCode(
+export async function getTokensFromCode(
   code: string,
   { clientId, clientSecret, redirectUrl }: BaseProvider.TokensFromCodeOptions
 ): Promise<OAuthTokens> {
@@ -76,7 +76,7 @@ async function getTokensFromCode(
   return result as OAuthTokens;
 }
 
-async function getUser(token: string): Promise<Apple.UserResponse> {
+export async function getUser(token: string): Promise<Apple.UserResponse> {
   try {
     const data = decodeJwt(token) as Apple.UserResponse;
     logger.log(`[provider user data], ${JSON.stringify(data)}`, "info");

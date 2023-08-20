@@ -23,7 +23,7 @@ type User = {
 }
 
 
-async function getTokensFromCode(
+export async function getTokensFromCode(
   code: string,
   { clientId, clientSecret, redirectUrl }: Options
 ): Promise<{ access_token: string, token_type: string, expires_in: number }> {
@@ -55,7 +55,7 @@ async function getTokensFromCode(
   return result;
 }
 
-async function getUser(
+export async function getUser(
   token: string,
   fields = 'id,email,first_name,last_name'
 ): Promise<User> {

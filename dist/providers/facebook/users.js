@@ -1,7 +1,7 @@
 import { ConfigError, ProviderGetUserError, TokenError } from '../../utils/errors';
 import { parseQuerystring } from '../../utils/helpers';
 import { logger } from '../../utils/logger';
-async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl }) {
+export async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl }) {
     logger.log(`[redirectUrl], ${JSON.stringify(redirectUrl)}`, 'info');
     const params = {
         client_id: clientId,
@@ -26,7 +26,7 @@ async function getTokensFromCode(code, { clientId, clientSecret, redirectUrl }) 
     }
     return result;
 }
-async function getUser(token, fields = 'id,email,first_name,last_name') {
+export async function getUser(token, fields = 'id,email,first_name,last_name') {
     try {
         const getUserResponse = await fetch(`https://graph.facebook.com/me?fields=${fields}&access_token=${token}`);
         const data = await getUserResponse.json();

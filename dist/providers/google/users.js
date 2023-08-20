@@ -1,7 +1,7 @@
 import { ConfigError, ProviderGetUserError, TokenError } from '../../utils/errors';
 import { parseQuerystring } from '../../utils/helpers';
 import { logger } from '../../utils/logger';
-async function getTokensFromCode(code, { redirectUrl, clientId, clientSecret }) {
+export async function getTokensFromCode(code, { redirectUrl, clientId, clientSecret }) {
     logger.log(`[redirectUrl], ${redirectUrl}`, 'info');
     const params = {
         client_id: clientId,
@@ -27,7 +27,7 @@ async function getTokensFromCode(code, { redirectUrl, clientId, clientSecret }) 
     }
     return result;
 }
-async function getUser(token) {
+export async function getUser(token) {
     try {
         const getUserResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
             headers: {

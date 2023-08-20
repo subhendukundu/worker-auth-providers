@@ -13,7 +13,7 @@ type Options = {
   isLogEnabled?: boolean,
 };
 
-async function getTokensFromCode(code: string, { redirectUrl, clientId, clientSecret }: Options): Promise<Tokens> {
+export async function getTokensFromCode(code: string, { redirectUrl, clientId, clientSecret }: Options): Promise<Tokens> {
   logger.log(`[redirectUrl], ${redirectUrl}`, 'info');
 
   const params = {
@@ -43,7 +43,7 @@ async function getTokensFromCode(code: string, { redirectUrl, clientId, clientSe
   return result;
 }
 
-async function getUser(token: string): Promise<User> {
+export async function getUser(token: string): Promise<User> {
   try {
     const getUserResponse = await fetch(
       'https://www.googleapis.com/oauth2/v2/userinfo',
