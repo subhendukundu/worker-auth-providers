@@ -1,3 +1,4 @@
 import { SocialProvider } from "../../types";
 export * from "./types";
-export declare const provider: SocialProvider<any>;
+declare const _default: SocialProvider<any>;
+export default _default;

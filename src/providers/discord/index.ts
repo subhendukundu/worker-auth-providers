@@ -3,7 +3,7 @@ import redirect from "./redirect";
 import { SocialProvider } from "../../types";
 export * from "./types";
 
-export const provider = {
+export default {
   users,
   getUser,
   getTokensFromCode,
