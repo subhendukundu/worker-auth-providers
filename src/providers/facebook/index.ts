@@ -13,9 +13,9 @@ export interface FecebookProvider extends SocialProvider {
   }: Facebook.CallbackOptions): Promise<Facebook.CallbackResponse>;
 }
 
-export const provider: FecebookProvider = {
+export default {
   users,
   getUser,
   getTokensFromCode,
   redirect,
-};
+} as FecebookProvider;

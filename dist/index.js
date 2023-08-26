@@ -1,19 +1,14 @@
-import * as apple_1 from "./providers/apple";
-export { apple_1 as apple };
-import * as github_1 from "./providers/github";
-export { github_1 as github };
-import * as google_1 from "./providers/google";
-export { google_1 as google };
 import * as twilio_1 from "./providers/twilio";
 export { twilio_1 as twilio };
-import * as facebook_1 from "./providers/facebook";
-export { facebook_1 as facebook };
-import * as discord_1 from "./providers/discord";
-export { discord_1 as discord };
-import * as spotify_1 from "./providers/spotify";
-export { spotify_1 as spotify };
 import * as sendgridEmail_1 from "./providers/sendgrid-email";
 export { sendgridEmail_1 as sendgridEmail };
 import * as mailgunEmail_1 from "./providers/mailgun-email";
 export { mailgunEmail_1 as mailgunEmail };
+// Social logins
+export { default as apple } from "./providers/apple";
+export { default as github } from "./providers/github";
+export { default as google } from "./providers/google";
+export { default as facebook } from "./providers/facebook";
+export { default as discord } from "./providers/discord";
+export { default as spotify } from "./providers/spotify";
 export * from "./types";

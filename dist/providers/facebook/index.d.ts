@@ -6,4 +6,5 @@ export interface FecebookProvider extends SocialProvider {
     convertPrivateKeyToClientSecret?(options: any): Promise<string>;
     users({ options, request, }: Facebook.CallbackOptions): Promise<Facebook.CallbackResponse>;
 }
-export declare const provider: FecebookProvider;
+declare const _default: FecebookProvider;
+export default _default;
