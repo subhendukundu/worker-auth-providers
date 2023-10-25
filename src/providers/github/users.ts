@@ -59,7 +59,9 @@ export async function getUser(token: string, userAgent: string = 'worker-auth-pr
       });
       const emails = await res.json()
       data.emails = emails
-      data.email = (emails.find((e: any) => e.primary) ?? emails[0]).email
+      if (Array.isArray(emails)) {
+        data.email = (emails.find((e: any) => e.primary) ?? emails[0]).email
+      }
     }
     return data;
   } catch (e: any) {
