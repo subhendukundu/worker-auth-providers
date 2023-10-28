@@ -1,51 +1,48 @@
-import * as queryString from 'query-string';
-import { ConfigError } from '../../utils/errors';
+import * as queryString from "query-string";
+import { ConfigError } from "../../utils/errors";
+import { BaseProvider } from "../../types";
+import { Discord } from "./types";
 
-type Options = {
-	clientId: string;
-	redirectUrl: string;
-	scope?: string;
-	responseType?: string;
-	prompt?: string;
-	permissions?: string;
-	guildId?: string;
-	disableGuildSelect?: boolean;
-	state?: any;
-};
+export default async function redirect({
+  options,
+}: Discord.RedirectOptions): Promise<string> {
+  const {
+    clientId,
+    redirectUrl,
+    redirectTo,
+    scope = "identify",
+    responseType = "code",
+    prompt,
+    permissions,
+    guildId,
+    disableGuildSelect,
+    state,
+  } = options;
+  if (!clientId) {
+    throw new ConfigError({
+      message: "No client id passed",
+    });
+  }
+  if (redirectUrl && !redirectTo) {
+    // If redirectUrl is provided but redirectTo is not, use redirectUrl (backward compatibility)
+    console.warn(
+      "The 'redirectUrl' option is deprecated. Please use 'redirectTo' instead."
+    );
+  }
+  // TODO: @subh to remove this in next version
+  const usedRedirect = redirectTo || redirectUrl; // Use redirectTo if provided, else fallback to redirectUrl
+  const params = queryString.stringify({
+    client_id: clientId,
+    prompt,
+    redirect_uri: usedRedirect,
+    response_type: responseType,
+    scope,
+    permissions,
+    guild_id: guildId,
+    disable_guild_select: disableGuildSelect,
+    state,
+  });
 
-type Props = {
-	options: Options
-}
-
-export default async function redirect({ options }: Props): Promise<string> {
-	const {
-		clientId,
-		redirectUrl,
-		scope = 'identify',
-		responseType = 'code',
-		prompt,
-		permissions,
-		guildId,
-		disableGuildSelect,
-		state
-	} = options;
-	if (!clientId) {
-		throw new ConfigError({
-			message: 'No client id passed'
-		});
-	}
-	const params = queryString.stringify({
-		client_id: clientId,
-		prompt,
-		redirect_uri: redirectUrl,
-		response_type: responseType,
-		scope,
-		permissions,
-		guild_id: guildId,
-		disable_guild_select: disableGuildSelect,
-		state
-	});
-
-	const url = `https://discord.com/api/oauth2/authorize?${params}`;
-	return url;
+  const url = `https://discord.com/api/oauth2/authorize?${params}`;
+  return url;
 }

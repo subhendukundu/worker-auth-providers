@@ -1,8 +1,11 @@
-export {
-  default as users,
+import { default as users, getUser, getTokensFromCode } from "./users";
+import redirect from "./redirect";
+import { SocialProvider } from "../../types";
+export * from "./types";
+
+export default {
+  users,
   getUser,
   getTokensFromCode,
-  convertPrivateKeyToClientSecret,
-} from "./users";
-export { default as redirect } from "./redirect";
-export * from "./types";
+  redirect,
+} as SocialProvider;

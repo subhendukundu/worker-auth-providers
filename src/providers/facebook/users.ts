@@ -1,33 +1,18 @@
-import { ConfigError, ProviderGetUserError, TokenError } from '../../utils/errors';
-import { parseQuerystring } from '../../utils/helpers';
-import { logger } from '../../utils/logger';
-
-type CallbackOptions = {
-  options: Options,
-  request: Request
-}
-
-type Options = {
-  clientId: string;
-  clientSecret: string;
-  redirectUrl: string;
-  fields?: string;
-  isLogEnabled?: boolean;
-}
-
-type User = {
-  id: string,
-  email: string,
-  first_name: string,
-  last_name: string
-}
-
+import { BaseProvider, OAuthTokens } from "../../types";
+import {
+  ConfigError,
+  ProviderGetUserError,
+  TokenError,
+} from "../../utils/errors";
+import { parseQuerystring } from "../../utils/helpers";
+import { logger } from "../../utils/logger";
+import { Facebook } from "./types";
 
 export async function getTokensFromCode(
   code: string,
-  { clientId, clientSecret, redirectUrl }: Options
-): Promise<{ access_token: string, token_type: string, expires_in: number }> {
-  logger.log(`[redirectUrl], ${JSON.stringify(redirectUrl)}`, 'info');
+  { clientId, clientSecret, redirectUrl }: BaseProvider.TokensFromCodeOptions
+): Promise<OAuthTokens> {
+  logger.log(`[redirectUrl], ${JSON.stringify(redirectUrl)}`, "info");
 
   const params = {
     client_id: clientId,
@@ -36,54 +21,57 @@ export async function getTokensFromCode(
     code,
   };
 
-  const response = await fetch('https://graph.facebook.com/v4.0/oauth/access_token', {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      accept: 'application/json',
-    },
-    body: JSON.stringify(params),
-  });
+  const response = await fetch(
+    "https://graph.facebook.com/v4.0/oauth/access_token",
+    {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json",
+      },
+      body: JSON.stringify(params),
+    }
+  );
   const result: any = await response.json();
-  logger.log(`[tokens], ${JSON.stringify(result)}`, 'info');
+  logger.log(`[tokens], ${JSON.stringify(result)}`, "info");
 
   if (result.error) {
     throw new TokenError({
       message: result.error_description,
     });
   }
-  return result;
+  return result as OAuthTokens;
 }
 
 export async function getUser(
   token: string,
-  fields = 'id,email,first_name,last_name'
-): Promise<User> {
+  fields = "id,email,first_name,last_name"
+): Promise<Facebook.UserResponse> {
   try {
     const getUserResponse = await fetch(
       `https://graph.facebook.com/me?fields=${fields}&access_token=${token}`
     );
-    const data: User = await getUserResponse.json();
-    logger.log(`[provider user data], ${JSON.stringify(data)}`, 'info');
+    const data: Facebook.UserResponse = await getUserResponse.json();
+    logger.log(`[provider user data], ${JSON.stringify(data)}`, "info");
     return data;
   } catch (e) {
-    logger.log(`[error], ${JSON.stringify(e)}`, 'error');
+    logger.log(`[error], ${JSON.stringify(e)}`, "error");
     throw new ProviderGetUserError({
-      message: 'There was an error fetching the user',
+      message: "There was an error fetching the user",
     });
   }
 }
 
-export default async function callback({ options, request }: CallbackOptions): Promise<{
-  user: any;
-  tokens: any;
-}> {
+export default async function callback({
+  options,
+  request,
+}: Facebook.CallbackOptions): Promise<Facebook.CallbackResponse> {
   const { query }: any = parseQuerystring(request);
   logger.setEnabled(options?.isLogEnabled || false);
-  logger.log(`[query], ${JSON.stringify(query)}`, 'info');
+  logger.log(`[query], ${JSON.stringify(query)}`, "info");
   if (!query.code) {
     throw new ConfigError({
-      message: 'No code is paased!',
+      message: "No code is paased!",
     });
   }
   const tokens = await getTokensFromCode(query.code, options);
@@ -91,6 +79,6 @@ export default async function callback({ options, request }: CallbackOptions): P
   const providerUser = await getUser(accessToken, options.fields);
   return {
     user: providerUser,
-    tokens
+    tokens,
   };
 }

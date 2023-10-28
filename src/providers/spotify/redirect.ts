@@ -1,35 +1,39 @@
-import * as queryString from 'query-string';
-import { ConfigError } from '../../utils/errors';
+import * as queryString from "query-string";
+import { ConfigError } from "../../utils/errors";
+import { BaseProvider } from "../../types";
 
-type SpotifyOAuthOptions = {
-	clientId: string;
-	redirectUrl: string;
-	scope?: string;
-	responseType?: string;
-	showDialog?: boolean;
-};
+export default async function redirect({
+  options,
+}: BaseProvider.RedirectOptions): Promise<string> {
+  const {
+    clientId,
+    redirectUrl, // Deprecated, use redirectTo instead
+    redirectTo, // Use this instead of redirectUrl
+    scope = "user-library-read playlist-modify-private",
+    responseType = "code",
+    showDialog = false,
+  } = options;
+  if (!clientId) {
+    throw new ConfigError({
+      message: "No client id passed",
+    });
+  }
+  if (redirectUrl && !redirectTo) {
+    // If redirectUrl is provided but redirectTo is not, use redirectUrl (backward compatibility)
+    console.warn(
+      "The 'redirectUrl' option is deprecated. Please use 'redirectTo' instead."
+    );
+  }
 
-export default async function redirect({ options }: { options: SpotifyOAuthOptions }): Promise<string> {
-	const {
-		clientId,
-		redirectUrl,
-		scope = 'user-library-read playlist-modify-private',
-		responseType = 'code',
-		showDialog = false
-	} = options;
-	if (!clientId) {
-		throw new ConfigError({
-			message: 'No client id passed'
-		});
-	}
-	const params = queryString.stringify({
-		client_id: clientId,
-		redirect_uri: redirectUrl,
-		response_type: responseType,
-		scope,
-		show_dialog: showDialog
-	});
+  const usedRedirect = redirectTo || redirectUrl; // Use redirectTo if provided, else fallback to redirectUrl
+  const params = queryString.stringify({
+    client_id: clientId,
+    redirect_uri: usedRedirect,
+    response_type: responseType,
+    scope,
+    show_dialog: showDialog,
+  });
 
-	const url = `https://accounts.spotify.com/authorize?${params}`;
-	return url;
+  const url = `https://accounts.spotify.com/authorize?${params}`;
+  return url;
 }
