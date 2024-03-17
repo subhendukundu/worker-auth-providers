@@ -9,7 +9,7 @@ export default async function redirect({
     clientId,
     redirectUrl, // Deprecated, use redirectTo instead
     redirectTo, // Use this instead of redirectUrl
-    scope = "openid email profile",
+    scope = ["openid", "email", "profile"],
     responseType = "code",
     state = "pass-through value",
     accessType = "online",
@@ -33,7 +33,7 @@ export default async function redirect({
     client_id: clientId,
     redirect_uri: usedRedirect,
     response_type: responseType,
-    scope,
+    scope: scope.join(" "),
     include_granted_scopes: "true",
     state,
     access_type: accessType,
