@@ -12,6 +12,7 @@ export default async function redirect({
     scope = "openid email profile",
     responseType = "code",
     state = "pass-through value",
+    accessType = "online",
   } = options;
   if (!clientId) {
     throw new ConfigError({
@@ -35,6 +36,7 @@ export default async function redirect({
     scope,
     include_granted_scopes: "true",
     state,
+    access_type: accessType,
   });
 
   const url = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
