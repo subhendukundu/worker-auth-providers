@@ -3,7 +3,7 @@ import { ConfigError } from "../../utils/errors";
 export default async function redirect({ options, }) {
     const { clientId, redirectUrl, // Deprecated, use redirectTo instead
     redirectTo, // Use this instead of redirectUrl
-    scope = "openid email profile", responseType = "code", state = "pass-through value", accessType = "online", } = options;
+    scope = ["openid", "email", "profile"], responseType = "code", state = "pass-through value", accessType = "online", } = options;
     if (!clientId) {
         throw new ConfigError({
             message: "No client id passed",
@@ -18,7 +18,7 @@ export default async function redirect({ options, }) {
         client_id: clientId,
         redirect_uri: usedRedirect,
         response_type: responseType,
-        scope,
+        scope: scope.join(" "),
         include_granted_scopes: "true",
         state,
         access_type: accessType,

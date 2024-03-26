@@ -47,7 +47,9 @@ export async function getUser(token, userAgent = 'worker-auth-providers-github-o
             });
             const emails = await res.json();
             data.emails = emails;
-            data.email = (emails.find((e) => e.primary) ?? emails[0]).email;
+            if (Array.isArray(emails)) {
+                data.email = (emails.find((e) => e.primary) ?? emails[0]).email;
+            }
         }
         return data;
     }
