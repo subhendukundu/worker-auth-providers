@@ -66,5 +66,6 @@ export namespace Github {
     redirect_uri?: string;
     scope: string;
     allow_signup?: boolean;
+    state?: string;
   };
 }
