@@ -62,6 +62,36 @@ export async function getUser(token: string): Promise<Google.UserResponse> {
   }
 }
 
+export async function verifyIdToken(
+  idToken: string
+): Promise<Google.GoogleTokenInfoResponse> {
+  try {
+    const verifyTokenResponse = await fetch(
+      `https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`,
+      {
+        method: "GET",
+      }
+    );
+
+    if (!verifyTokenResponse.ok) {
+      throw new Error("Invalid or expired ID token");
+    }
+
+    // Return the response directly as GoogleTokenInfoResponse
+    const data: Google.GoogleTokenInfoResponse =
+      await verifyTokenResponse.json();
+    logger.log(`[token verification data], ${JSON.stringify(data)}`, "info");
+
+    return data;
+  } catch (e: any) {
+    logger.log(`[error], ${JSON.stringify(e.stack)}`, "error");
+
+    throw new ProviderGetUserError({
+      message: "There was an error verifying the ID token",
+    });
+  }
+}
+
 export default async function callback({
   options,
   request,
