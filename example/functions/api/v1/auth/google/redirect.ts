@@ -14,14 +14,14 @@ const params = queryString.stringify({
     state: "pass-through value",
 });
 
-const githubLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
+const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
 
 export default {
     async handler({ request }) {
         return {
             status: 302,
             headers: {
-                location: githubLoginUrl,
+                location: googleLoginUrl,
             },
         };
     },
