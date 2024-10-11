@@ -45,6 +45,26 @@ export async function getUser(token) {
         });
     }
 }
+export async function verifyIdToken(idToken) {
+    try {
+        const verifyTokenResponse = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`, {
+            method: "GET",
+        });
+        if (!verifyTokenResponse.ok) {
+            throw new Error("Invalid or expired ID token");
+        }
+        // Return the response directly as GoogleTokenInfoResponse
+        const data = await verifyTokenResponse.json();
+        logger.log(`[token verification data], ${JSON.stringify(data)}`, "info");
+        return data;
+    }
+    catch (e) {
+        logger.log(`[error], ${JSON.stringify(e.stack)}`, "error");
+        throw new ProviderGetUserError({
+            message: "There was an error verifying the ID token",
+        });
+    }
+}
 export default async function callback({ options, request, }) {
     const { query } = parseQuerystring(request);
     logger.setEnabled(options?.isLogEnabled || false);
