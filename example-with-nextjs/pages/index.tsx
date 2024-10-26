@@ -69,6 +69,14 @@ export default function Home({ message }: any) {
         >
           <FaDiscord />
         </a>
+        <a
+          className="icon-btn"
+          rel="noreferrer"
+          href="/api/v1/auth/auth0/redirect"
+          title="Auth0 Login"
+        >
+          <img src="/auth0-logo.png" alt="Auth0" style={{ width: '24px', height: '24px' }} />
+        </a>
       </nav>
     </div>
   )
