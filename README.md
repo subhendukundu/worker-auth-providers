@@ -38,7 +38,7 @@ npm install worker-auth-providers
 import {
   github, google,
   twilio, facebook, discord,
-  spotify
+  spotify, auth0
 } from "worker-auth-providers";
 ```
 **Step 3**: Redirect users
@@ -64,6 +64,22 @@ const res = await awsSNS.send({
     kvProvider: WORKER_AUTH_PROVIDERS_STORE,
   },
 })
+
+// or redirect to Auth0 login
+
+const auth0LoginUrl = await auth0.redirect({
+  options: {
+    clientId,
+    domain: "your-auth0-domain",
+    redirectUrl: "your-redirect-url",
+  },
+});
+return {
+  status: 302,
+  headers: {
+    location: auth0LoginUrl,
+  },
+};
 ```
 **Step 4**: Get user
 ```javascript
@@ -82,6 +98,18 @@ const res = await awsSNS.verify({
     secret: 'eyJhbGciOiJIUzI1NiJ9.ew0KICAic3ViIjogIjE2Mjc4MTE1MDEiLA0KICAibmFtZSI6ICJoYWFsLmluIiwNCiAgImlhdCI6ICIwMTA4MjAyMCINCn0.aNr18szvBz3Db3HAsJ-2KHYbnnHwHfK65CiZ_AWwpc0',
   },
 })
+
+// or get Auth0 user
+const { user: auth0User, tokens: auth0Tokens } = await auth0.users({
+  options: {
+    clientId,
+    clientSecret,
+    domain: "your-auth0-domain",
+    redirectUrl: "your-redirect-url",
+  },
+  request,
+});
+console.log("[auth0User]", auth0User);
 ```
 
 ## 📃 Documentation
@@ -112,7 +140,7 @@ Please adhere to this project's [code of conduct](code-of-conduct.md).
 - [ ] Amazon
 - [ ] Twitter
 - [x] Spotify
-- [ ] Auth0
+- [x] Auth0
 
 
 ##FAQs
